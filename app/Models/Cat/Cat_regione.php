@@ -3,11 +3,8 @@
 namespace App\Models\Cat;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-use function PHPUnit\Framework\returnSelf;
 
 class Cat_regione extends Model {
     //protected $table = "cat_regions";
@@ -25,7 +22,6 @@ class Cat_regione extends Model {
         return Cat_regione::find($id);
     }
 
-    // Municipios y estados
     public function ObteterRegionesyNumEstados (){
         $tabla = DB::table('cat_regiones')
         ->select(DB::raw('cat_regiones.nombre AS nombre, count(cat_entidades_federativas.nombre) as cant_entidades'))
@@ -35,11 +31,9 @@ class Cat_regione extends Model {
         return $tabla;
     }
 
-    // Relacion uno a muchos con Cat_entidades_federativa
-        public function cat_entidades_federativas(){
-            return $this->hasMany(cat_entidades_federativa::class); //regresa * regiones con objetos de sus entidades correspondientes
-        }
-    // Relacion uno a muchos con Cat_entidades_federativa
+    public function cat_entidades_federativas(){
+        return $this->hasMany(cat_entidades_federativa::class); //regresa * regiones con objetos de sus entidades correspondientes
+    }   
 
     
 }

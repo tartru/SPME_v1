@@ -24,11 +24,7 @@ class CatEntidadesFederativasController extends Controller
         return $rows;
     }
 
-    public function agrupado() {  
-        // $entidades = \App\Region::find(1);
-        // $region->passports;   
-        $entidades=Cat_entidades_federativa::where('deleted',0)->get();
-
+    public function agrupado() {                   
                 
         $data = [
             'menu_active' => 'Administrar',
@@ -37,8 +33,7 @@ class CatEntidadesFederativasController extends Controller
                     'Administrar' => route('admin_index'), 
                     'Entidades federativas' => route('admin_entidades_federativas')
                 ],
-                //'rows'        => $this->cat_entidades_federativas->ObteterEstadosyNumMunicipios(),
-                'rows'        => $entidades,
+                'rows'        => $this->cat_entidades_federativas->ObteterEstadosyNumMunicipios(),
                 'catalogos'   => [
                     'regiones'  => Cat_regione::select(['nombre'])->where('deleted',0)->get(),
                     'entidades' => Cat_entidades_federativa::select(['nombre'])->where('deleted',0)->get(),
@@ -49,8 +44,6 @@ class CatEntidadesFederativasController extends Controller
         //return view('Pat.index',compact('data')); //como objeto
         return view('Cat/EntidadesList',$data);
     }
-
-
 
     public function prueba() {
     //$data=$this->cat_entidades_federativas->cat_entidades_federativas()->get();

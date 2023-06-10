@@ -31,13 +31,22 @@ class UsersController extends Controller
         return view('UsersList',$data);
     }
 
-    public function getByName(Request $request) {
-        $name = $request->get('name');
-        $usuar = $this->usuario->where('name','like',$name)->get();
-        $filter = [
-            'name'    => $name,
-            'deleted' => 0,
-        ];
+    public function show(Request $request)  {
+        if (session()->has('us')){
+            $id=session()->get('us');
+            $usuario=$this->usuario::find($id);
+            //return dump($usuario);
+            if(!empty($usuario)){
+                return view('UsersProfile',$usuario);
+            }
+        }
+        else{
+            return redirect()->route('home');
+        }
 
+        
     }
-}
+
+    
+
+}  //fin de clase

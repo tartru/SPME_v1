@@ -18,8 +18,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
         'password',
+        'email',
+        'type',
+        'full_name',
+        'puesto',
+        'area',
+        'last_ip',
+        'active',
+        'created_at',
     ];
 
     /**
@@ -41,10 +48,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function Obtener() {
+    public function getAll() {
         return User::all();
     }
 
+    public function getById($id) {
+        return User::find($id);
+    }
 
+// Busca usuario por nombre y lo retorna o el regresa false
+    public function getByName($request) {
+        //var_dump($request);
+        if(!empty($request)){
+            $name = $request;
+            $usuario = User::where('name',$name)->where('active',1)->get();
+            if(count($usuario) >= 1){
+                return (['status' => 200,'usuario' => $usuario]);
+            }
+            else
+            {
+                return (['status' => 401,'message' => "No se encontro el nombre de usuario"]);
+            }
+
+        }
+        else {
+            return (['status' => 400,'message' => "No se recibio el nombre de usuario"]);
+        }
+    }
+// Busca usuario por nombre y lo retorna o el regresa false
+     
 
 }
