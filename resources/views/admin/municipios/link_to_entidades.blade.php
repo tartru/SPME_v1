@@ -1,0 +1,1 @@
+<a href="{{ route('admin_entidades_federativas') }}" class="btn btn-outline-primary">{{ $row->entidad }}</a>

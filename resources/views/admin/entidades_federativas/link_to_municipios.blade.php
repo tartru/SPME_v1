@@ -1,0 +1,1 @@
+<a href="{{ route('admin_municipios_by_entidad_federativa_id',['cat_entidad_federativa_id' => $row['id']]) }}" class="btn btn-outline-primary">{{ $row['cant_municipios'] }}</a>

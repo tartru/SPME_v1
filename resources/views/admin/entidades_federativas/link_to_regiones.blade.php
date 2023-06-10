@@ -1,0 +1,1 @@
+<a href="{{ route('admin_regiones') }}" class="btn btn-outline-primary">{{ $row['region'] }}</a>

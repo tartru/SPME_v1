@@ -1,0 +1,1 @@
+<a href="{{ route('admin_entidades_federativas_by_region_id',['cat_region_id' => $row['id']]) }}" class="btn btn-outline-primary">{{ $row['cant_entidades'] }}</a>
