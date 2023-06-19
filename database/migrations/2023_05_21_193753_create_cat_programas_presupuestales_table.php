@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('cat_programas_presupuestales', function (Blueprint $table) {
             $table->engine = ('InnoDB');
             $table->id()->autoIncrement();
+            $table->string('anio',5);
             $table->string('clave', 100);
             $table->string('nombre', 512)->nullable();
             $table->tinyInteger('active')->default(1);

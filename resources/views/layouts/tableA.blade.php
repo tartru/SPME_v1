@@ -1,6 +1,7 @@
 @php
 //var_dump($table_config[headers]); // muestra datos recibidos
 $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $table_config['id'] : 'zero-config';
+
 @endphp
 <div>
     {{-- Bloques previos --}}
@@ -38,9 +39,9 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
             @endif
             
             {{-- opciones de filtros --}}
-            @php
+            @php //num de columnas para filtros
                 $_t_f_cont = 0;
-                $_sc_cant  = count($table_config['actions']['search_columns']); //num de columnas para filtros
+                $_sc_cant  = count($table_config['actions']['search_columns']); 
             @endphp
             @foreach ( $table_config['actions']['search_columns'] as $_h_key => $_s_c_val) {{--para cada accion imprime su campo/selec correspondiente--}}
                 @if ( $_t_f_cont == 0 || $_t_f_cont % 4 == 0 )
@@ -104,8 +105,8 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
 
     {{-- Tabla de datos --}}
         <table id="{{ $_data_table_id }}" class="table table-striped dt-table-hover text-wrap" style="width:auto;">
+            {{-- Encabezados de tabla --}}
             <thead>
-                <tr>
                     @if ( !empty($table_config['with_pos']) )
                         <th>#</th>
                     @endif
@@ -113,9 +114,12 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                     @foreach ( $table_config['headers'] as $_h_key => $_h_val )
                         <th data-datatable-column="{{ $_h_key }}">{{ $_h_val }}</th>
                     @endforeach
-                </tr>
+                    @if (!empty($permissions))
+                        <th>Acciónes</th>
+                    @endif
             </thead>
-            <tbody> {{-- datos de $row --}}
+            {{-- cuerpo de tabla --}}
+            <tbody> 
                 @if ( !empty($table_config['row_template']) )
                     
                     @foreach ( $table_data as $r_pos => $row )
@@ -127,7 +131,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                         $t_pos = 1;
                     @endphp
                     
-                    @foreach ($table_data as $r_pos => $row )  {{-- todos los datos pasados por row que es 1=>campo --}}
+                    @foreach ($table_data as $r_pos => $row )
                         <tr>
                             <td>{{ $t_pos }}</td>
 
@@ -140,6 +144,16 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                                     @endif
                                 </td>
                             @endforeach
+                            @if ( !empty($permissions))
+                                <td>
+                                    <div class="btn-group">
+                                        @if ( !empty($permissions['edit']))
+                                            <a type="button" class="btn btn-primary" href="{{$permissions['edit']}}/{{$row['id']}}">Editar </a>
+                                        @endif
+                                    </div>
+                                </td>
+                            @endif
+                            
                         </tr>
                         
                         @php
@@ -160,6 +174,16 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                                     @endif
                                 </td>
                             @endforeach
+
+                            @if ( !empty($permissions))
+                                <td>
+                                    <div class="btn-group">
+                                        @if ( !empty($permissions['edit']))
+                                        <a type="button" class="btn btn-primary" href="{{route ($permissions['edit'],$row)}}">Editar</a>
+                                        @endif
+                                    </div>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
 

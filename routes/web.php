@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+ 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +16,32 @@ use Illuminate\Support\Facades\Http;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('google')->redirect();
+});
+ 
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('google')->user();
+    // $user->token
+});
+
+Route::get('/auth/callback', function () {
+    $githubUser = Socialite::driver('github')->user();
+ 
+    $user = User::updateOrCreate([
+        'github_id' => $githubUser->id,
+    ], [
+        'name' => $githubUser->name,
+        'email' => $githubUser->email,
+        'github_token' => $githubUser->token,
+        'github_refresh_token' => $githubUser->refreshToken,
+    ]);
+ 
+    Auth::login($user);
+ 
+    return redirect('/dashboard');
+});
 
 /*
 //Account
@@ -32,27 +60,24 @@ Route::get('logout',[App\Http\Controllers\AuthenticationController::class,'logou
 //Account
 
 /*//General
-    Route::get('general.home', function () {
-        if (null!==(Http::get('general.home')->json("TOKEN")))
-        {
-        echo Http::get('general.home')->headers();
+    Route::get('/', function () {
+        if(auth::check()) {
+            if((auth()->user()->active)==0) {
+            return redirect()->route('welcome');
+            }
         }
         else {
-            return view('general.home', ['menu_active' => 'home']);
+            return view('account.login')->with('message',"Tu Sesión expiró, Inicia nuevamente");
         }
-    })->name('validate');
+        return view ('general.home');
+    })->name('home');
 //General
 */
 
     
-    Route::get('/', function () {
-        if (session()->has('token')){
-                return view('general.home', ['menu_active' => 'home']);
-            }
-            else{
-               return view('account.login')->with('message',"Tu Sesión expiró, Inicia nuevamente");
-            }
-    })->middleware('auth')->name('home');
+    Route::get('/',[App\Http\Controllers\AuthenticationController::class,'welcome'])->name('home');
+
+    Route::get('/welcome',[App\Http\Controllers\AuthenticationController::class,'welcome'])->middleware('auth')->name('welcome');
 
     //Route::post('/',[App\Http\Controllers\ValidaController::class, 'validate_token'])->name('validate');
  
@@ -60,7 +85,7 @@ Route::get('logout',[App\Http\Controllers\AuthenticationController::class,'logou
 //Administracion
     Route::get('admin', function () {
         return view('admin.index', ['menu_active' => 'admin_index', 'breadcrumb' => ['Administrar' => '']]);
-    })->name('admin_index');
+    })->name('admin.index');
 
     //Estatus
          Route::get('Cat/estatus', [App\Http\Controllers\Cat\CatEstatusController::class, 'index'])->middleware('auth')->name('admin_estatus');
@@ -109,32 +134,46 @@ Route::get('logout',[App\Http\Controllers\AuthenticationController::class,'logou
 
 //Configuracion
     // usuarios
-        Route::get('usuarios', [App\Http\Controllers\UsersController::class, 'index'])->middleware('auth')->name('admin_usuarios');
-        Route::get('profile', [App\Http\Controllers\UsersController::class, 'show'])->middleware('auth')->name('admin_profile');
+        Route::get('usuarios', [App\Http\Controllers\UsersController::class, 'index'])->middleware('auth')->name('admin.usuarios.index');
+        Route::get('usuarios/{row}', [App\Http\Controllers\UsersController::class, 'edit'])->middleware('auth')->name('admin.usuarios.edit');
+        Route::get('profile', [App\Http\Controllers\UsersController::class, 'profile'])->middleware('auth')->name('admin_profile');
      // usuarios
+     
+     //Roles
+        Route::get('roles', [App\Http\Controllers\UsersController::class, 'index'])->middleware('auth')->name('admin_config'); //por configurar
+     //Roles
+     
+    // bitacora
+        Route::get('bitacora', [App\Http\Controllers\UsersController::class, 'index'])->middleware('auth')->name('admin_bitacora'); //por configurar
+    //bitacora
+
+    // correos
+        Route::get('correos', [App\Http\Controllers\UsersController::class, 'index'])->middleware('auth')->name('admin_plantillas_correos'); //por configurar
+    //correos
      // grupos captura
-     Route::get('Cat/grupos_capturas', [App\Http\Controllers\GruposCapturasController::class, 'index'])->name('admin_grupos_captura'); //NO CONFIGURADO
+     Route::get('Cat/grupos_capturas', [App\Http\Controllers\GruposCapturasController::class, 'index'])->middleware('auth')->name('admin_grupos_captura'); //NO CONFIGURADO
      // grupos captura
+
 //Configuracion
 
 //Programa Anual de Trabajo
         //PAT
-            Route::get('Pat/Planea-Pat', [App\Http\Controllers\Pat\PatController::class, 'estados'])->name('Planea-Pat');
+            Route::get('Pat/Planea-Pat', [App\Http\Controllers\Pat\PatController::class, 'estados'])->middleware('auth')->name('Planea-Pat');
         //PAT
 //Programa Anual de Trabajo
 
 //Indicadores 
         //MIR
-        Route::get('Mir/Planea-Mir', [App\Http\Controllers\Mir\MirController::class, 'index'])->name('Planea-Mir');
+        Route::get('Mir/Planea-Mir', [App\Http\Controllers\Mir\MirController::class, 'index'])->middleware('auth')->name('Planea-Mir');
         //MIR
 //Indicadores 
 
         //METAS
-        Route::get('Metas/Planea-Metas', [App\Http\Controllers\Metas\MetasController::class, 'index'])->name('Planea-Metas');
+        Route::get('Metas/Planea-Metas', [App\Http\Controllers\Metas\MetasController::class, 'index'])->middleware('auth')->name('Planea-Metas');
         //METAS
 
         //PIC
-        Route::get('Pic/Planea-Pic', [App\Http\Controllers\Pic\PicController::class, 'index'])->name('Planea-Pic');
+        Route::get('Pic/Planea-Pic', [App\Http\Controllers\Pic\PicController::class, 'index'])->middleware('auth')->name('Planea-Pic');
         //PIC
 
-        Route::get('prueba',[App\Http\Controllers\UsersController::class, 'show'])->name('prueba');
+        Route::get('prueba',[App\Http\Controllers\UsersController::class, 'show'])->middleware('auth')->name('prueba');

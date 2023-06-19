@@ -33,18 +33,18 @@
         <link href="{{ asset('dx/src/assets/css/dark/custom.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('dx/src/assets/css/light/custom.css') }}" rel="stylesheet" type="text/css" />
         <style>
-    img{
-      width: 100%;
-    }
-    body {
-      background: url("{{ url('/')}}/images/back-02.jpg"); 
-      background-size: cover;
-      background-repeat: no-repeat;
-      margin: 0;
-      height: 100vh;
-    }
+            img{
+            width: auto;
+            }
+            body {
+            background: url("{{ url('/')}}/images/back-02.jpg"); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            height: 100vh;
+            }
 
-  </style>
+        </style>
     </head>
 
     <body class="{{ (!empty($body_class)) ? $body_class : 'layout-boxed' }}" layout="full-width">
@@ -74,7 +74,7 @@
             <div id="content" class="main-content">
                 <div class="layout-px-spacing">
 
-                    <div class="middle-content container-xxl p-0">
+                    <div class="middle-content container-xxl p-2">
 
                         @include('layouts.breadcrumbs')
 

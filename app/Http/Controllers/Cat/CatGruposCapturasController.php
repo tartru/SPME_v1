@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Cat;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Cat\cat_grupos_captura;
+use App\Models\Cat\Cat_grupos_captura;
 
 class CatGruposCapturasController extends Controller
 {
@@ -20,7 +20,7 @@ class CatGruposCapturasController extends Controller
         $cat_grupos_capuras = $this->cat_grupos_capuras->All();
         
         $data = [
-            'menu_active' => 'grupos_captura',
+            'menu_active' => 'Administrar',
             'submenu_active' => 'admin_grupos_captura',
             'breadcrumb'  => [
                 'Administrar' => route('admin_index'), 

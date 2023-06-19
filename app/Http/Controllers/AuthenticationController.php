@@ -10,6 +10,7 @@ use Firebase\JWT\Key;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Cat\Cat_system;
 
 class AuthenticationController extends Controller
 {
@@ -35,8 +36,13 @@ class AuthenticationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function auth_login() {
-       if (session()->has('us')){
-            return redirect()->route('home');
+        if(auth::check()) {
+            if((auth()->user()->active)==0) {
+            return redirect()->route('welcome');
+            }
+            if((auth()->user()->active)!=0) {
+                return redirect()->route('home');
+            }
         }
        return view('account.login', ['body_class' => 'form']);
     }
@@ -78,7 +84,12 @@ class AuthenticationController extends Controller
             //return var_dump($cadena);
             session()->regenerate();
             session(['token' => $result['jwt'],'us'=>$result['id']]);
-            return redirect()->route('home');
+            if((auth()->user()->role)==0) {
+                return redirect()->route('welcome');
+            }
+            if((auth()->user()->role)!=0) {
+                return redirect()->route('home');
+            }
             
         }
         if (isset($result['status']) && $result['status'] != 200) {
@@ -175,47 +186,6 @@ class AuthenticationController extends Controller
     }
 
 
-    /**
-     * Valiud the token
-     * 
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function validate_token() {
-        // return auth()->user()->name;
-        // $token        = $request->bearerToken();
-        $token        = session('token');
-        $repository   = $this->getRepository();
-        $dependencias = [
-            'repository' => $repository,
-            'jwt_key'    => env('JWT_KEY'),
-            'FB_JWT'     => JWT::class,
-            'FB_JWT_Key' => Key::class,
-            'TOKEN_TIME' => env('TOKEN_TIME'),
-        ];
-
-        $result = AuthenticationService::execute('validToken', new ServiceRequest(['token' => $token], $dependencias) );
-
-        if ( !$result->success() ) {
-            echo $result->getMsg();
-            //return false;
-
-            if ( !empty($result->getResponse()) ) {
-                var_dump($result->getResponse());
-            }
-        }
-
-        else {
-            if (is_null($result->getResponse('us'))){
-                echo 'Token válido';
-            }
-             else {
-                return $result->getResponse('us');
-             }
-        }
-    }
-
-
     //Logout de sesiones
     public function logout () {
         Auth::logout();
@@ -224,20 +194,25 @@ class AuthenticationController extends Controller
         return redirect()->route('login'); 
     }
 
+    
+    public function welcome (){
+        if(auth::check()) {
+            if((auth()->user()->active)==0) {
+                $rows = Cat_system::where('active',1)->get();
 
-    /**
-     * Genera la conexión a la base de datos
-     * 
-     * @return \SPME\Shared\Persistence\Repository\Repository
-     */
-    private function getRepository() {
-        if ( env('DB_REPOSITORY') == 'Local' ) {
-            return LaravelRepository::getRepository(['db_facade' => "Illuminate\Support\Facades\DB", 'connection' => 'mysql']);
+                $data = [
+                    'menu_active' => 'home',
+                    'breadcrumb'  => ['Inicio' => route('welcome')],
+                    'rows'        => $rows,
+                ];
+                return view('welcome',$data);
+            }
+            if((auth()->user()->active)!=0) {
+                // verificar permisos y generar menu
+                return view ('general.home');
+            }
         }
-
-        else {
-            return CnfDbApiRepository::getRepository(['url' => env('DB_HOST'), 'ephylone' => env('DB_DATABASE')]);
-        }
+        return view('account.login')->with('message',"Tu Sesión expiró, Inicia nuevamente");
     }
-
-}
+ 
+} //FIN CLASE

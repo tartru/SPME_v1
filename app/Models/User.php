@@ -53,7 +53,9 @@ class User extends Authenticatable
     }
 
     public function getById($id) {
-        return User::find($id);
+         $usuario = $this->where('id',$id)->get();
+         return (['status' => 200,'usuario' => $usuario]);
+
     }
 
 // Busca usuario por nombre y lo retorna o el regresa false
@@ -61,7 +63,7 @@ class User extends Authenticatable
         //var_dump($request);
         if(!empty($request)){
             $name = $request;
-            $usuario = User::where('name',$name)->where('active',1)->get();
+            $usuario = User::where('name',$name)->get();
             if(count($usuario) >= 1){
                 return (['status' => 200,'usuario' => $usuario]);
             }

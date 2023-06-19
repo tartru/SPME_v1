@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -20,31 +21,54 @@ class UsersController extends Controller
         $usuario = $this->usuario->all();
         
         $data = [
-            'menu_active' => 'configuraciones',
-            'submenu_active' => 'admin_usuarios',
+            'menu_active' => 'Administrar',
+            'submenu_active' => 'admin.usuarios.index',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Estatus' => route('admin_usuarios')
+                'Administrar' => route('admin.usuarios.index'), 
+                'Usuarios' => route('admin.usuarios.index')
             ],
             'rows'        => $usuario
         ];
         return view('UsersList',$data);
     }
 
-    public function show(Request $request)  {
-        if (session()->has('us')){
-            $id=session()->get('us');
-            $usuario=$this->usuario::find($id);
-            //return dump($usuario);
-            if(!empty($usuario)){
-                return view('UsersProfile',$usuario);
-            }
-        }
-        else{
-            return redirect()->route('home');
-        }
+    public function profile()  {
+        $id=auth()->id ();
+        $user=$this->usuario->find($id);
+        // if((auth()->user()->active)!=0) {
+        //     $role=$this->role->find($id);
+        //     $permision=$this->permision->getByid($role->id);
+        // }
+        $data = [
+            'menu_active' => 'Cuenta',
+            'submenu_active' => 'admin_profile',
+            'breadcrumb'  => [
+                'Cuenta' => route('admin.usuarios.index'), 
+                'Profile' => route('admin_profile')
+            ],
+            'rows'        => $user,
+            // 'role'      =>$role,
+            // 'permision'      =>$role,
+        ];
+        //return dump($user);
+        return view('UsersProfile',$data);    
+    }
 
+    public function edit(User $row){
+        $roles=Role::all();
         
+        $data = [
+            'menu_active' => 'Administrar',
+            'submenu_active' => 'admin.usuarios.index',
+            'breadcrumb'  => [
+                'Administrar' => route('admin.index'), 
+                'Usuarios' => route('admin.usuarios.index'),
+                'Editar' => route('admin.usuarios.index'),
+            ],
+            'user'        => $row,
+            'roles'=>$roles,
+        ];
+        return view('UserEdit',$data);
     }
 
     

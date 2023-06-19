@@ -26,7 +26,8 @@ class CatMunicipiosController extends Controller
 
         //regiones
         $data = [
-            'menu_active' => 'admin_municipios',
+            'menu_active' => 'Administrar',
+            'submenu_active' => 'admin_municipios',
             'breadcrumb'  => ['Administrar' => route('admin_index'), 'Regiones' => route('admin_municipios')],
             'rows'        => $cat_municipios,
         ];

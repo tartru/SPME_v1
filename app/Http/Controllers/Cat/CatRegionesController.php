@@ -30,7 +30,7 @@ class CatRegionesController extends Controller
             ],
             'rows'        => $cat_regiones,
         ];
-        return view('Cat/RegionesList',$data);
+        return view('Cat.RegionesList',$data);
     }
 
     public function agrupado(){

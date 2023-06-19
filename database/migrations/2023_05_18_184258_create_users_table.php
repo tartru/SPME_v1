@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name', 120);
             $table->string('password')->nullable()->default(null);
             $table->string('email', 100);
+            $table->string('type', 20);
             $table->string('full_name')->nullable()->default(null);
             $table->string('puesto')->nullable()->default(null);
             $table->string('area')->nullable()->default(null);
@@ -27,7 +28,7 @@ return new class extends Migration
             $table->tinyInteger('login_attempts')->nullable()->default(0);
             $table->string('ban_reason')->nullable()->default(0);
             $table->tinyInteger('bloqued')->nullable()->default(0);
-            $table->tinyInteger('active')->nullable()->default(1);
+            $table->tinyInteger('active')->nullable()->default(0);
             $table->tinyInteger('deleted')->nullable()->default(0);
             $table->timestamps();
             $table->timestamp('logged_at')->nullable()->default(null);

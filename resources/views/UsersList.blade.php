@@ -43,7 +43,12 @@
                 'extras_accordion' => false,
                 'export_data'      => true,
             ],
-        ]])
+        ],
+        'permissions' => [
+            'edit'=>'admin.usuarios.edit',
+            'delete',
+            'creat'],
+        ])
         <!-- FIN Variables -->
     </div>
 @endsection
