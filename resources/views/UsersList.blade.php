@@ -45,9 +45,10 @@
             ],
         ],
         'permissions' => [
-            'edit'=>'admin.usuarios.edit',
-            'delete',
-            'creat'],
+            'edit'=>'admin.users.edit',
+            'delete'=>'admin.users.edit',
+            'creat'=>'admin.users.edit',
+        ],
         ])
         <!-- FIN Variables -->
     </div>

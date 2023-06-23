@@ -24,10 +24,10 @@ class CatOrigenesPresupuestalesController extends Controller
         $cat_origenes_presupuestales = $this->cat_origenes_presupuestales->All();
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_origenes_presupuestales',
+            'submenu_active' => 'admin.origenes_presupuestales',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Orígenes presupuestales' => route('admin_origenes_presupuestales'),
+                'Administrar' => route('admin.index'), 
+                'Orígenes presupuestales' => route('admin.origenes_presupuestales'),
             ],
             'rows'        => $cat_origenes_presupuestales,
         ];

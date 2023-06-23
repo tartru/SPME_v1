@@ -21,10 +21,10 @@ class CatGruposCapturasController extends Controller
         
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_grupos_captura',
+            'submenu_active' => 'admin.grupos_captura',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Grupos' => route('admin_grupos_captura')
+                'Administrar' => route('admin.index'), 
+                'Grupos' => route('admin.grupos_captura')
             ],
             'rows'        => $cat_grupos_capuras
         ];

@@ -28,10 +28,10 @@ class CatEntidadesFederativasController extends Controller
                 
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_entidades_federativas',
+            'submenu_active' => 'admin.entidades_federativas',
                 'breadcrumb'    => [
-                    'Administrar' => route('admin_index'), 
-                    'Entidades federativas' => route('admin_entidades_federativas')
+                    'Administrar' => route('admin.index'), 
+                    'Entidades federativas' => route('admin.entidades_federativas')
                 ],
                 'rows'        => $this->cat_entidades_federativas->ObteterEstadosyNumMunicipios(),
                 'catalogos'   => [

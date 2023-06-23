@@ -16,64 +16,48 @@
 
 
 @section('content')
-    <div class="widget-content br-8">
-        <!-- Variables -->                
-        @php
-        $regiones_options = [];
-        foreach ($catalogos['regiones'] as $value) 
-        {
-            //echo gettype($value), "-";
-            //echo ($value->nombre), "</br>";
-            $regiones_options[$value->nombre] = $value->nombre;
-        }
-        //var_dump($regiones_options); //ver contenido del array
-        //echo "</br>",$regiones_options[1]; //ver si asigno el indice la llave id
-        @endphp
-
+    <div class="widget-content widget-content-area br-8">
+        <!-- Variables -->
+        @php 
+            $permisos=[]; 
+        @endphp               
+        @can('spme.admin.user.update')
+             @php $permisos['update']='admin.users.update';@endphp   
+        @endcan
+        @can('spme.admin.user.delete')
+             @php $permisos['delete']='admin.users.index'; @endphp 
+        @endcan
+        @can('spme.admin.user.create')
+             @php $permisos['create']='admin.users.index'; @endphp 
+        @endcan
+        
         @include('layouts.tableA', ['table_data' => $rows, 'table_config' => [
-            'headers'  => [
-                'CVE_ENTIDAD'     => 'CVE_ENTIDAD',
-                'nombre'          => 'Entidad',
-                'abreviacion'     => 'Abreviación',
-                'region'          => 'Región',
-                'cant_municipios' => 'Cantidad de municipios',
+            'headers' => [
+                'id'     => 'id',
+                'name'   => 'User',
+                'email'  => 'Email',
+                'full_name'  => 'Nombre',
+                'puesto' => 'Puesto',
+                'area' => 'Area',
+                'ban_reason' => 'Baneo',
+                'bloqued' => 'Block',
+                'active' => 'Activo',
+
             ],
-            'with_pos' => true,
+            'with_pos' => false,
             'actions'  => [
                 'pagination' => [
-                    'options' => [20,50],
-                    'rows'    => 50
+                    'options' => [10,30,50,100],
+                    'rows'    => 15
                 ],
                 'ordering'         => true,
                 'searching'        => true,
                 'extras_accordion' => false,
                 'export_data'      => true,
-                'search_columns'   => [
-                    'CVE_ENTIDAD' => [
-                        'type'        => 'text',
-                        'placeholder' => 'Filtrar por entidad',
-                        'name'        => 'CVE_ENTIDAD',
-                    ],
-                    'nombre' => [
-                        'type'        => 'text',
-                        'placeholder' => 'Filtrar por Nombre',
-                        'name'        => 'Nombre de entidad',
-                    ],
-                    'region' => [
-                        'type'    => 'select',
-                        'options' => $regiones_options,
-                        'name'        => 'Nombre de Región',
-                    ],
-                    'cant_municipios' => [
-                        'type' => 'range',
-                        'min'  => 0,
-                        'max'  => 800,
-                        'step' => 1,
-                        'name'        => 'Rango de Municipios',
-                    ],
-                ],
             ],
-        ]])
+        ],
+        'permissions' => $permisos,
+        ])
         <!-- FIN Variables -->
     </div>
 @endsection

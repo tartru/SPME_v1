@@ -107,13 +107,9 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
             <div class="row">
                 <div class="col-10 mb-xl-0 mb-2"><h4>ROLES DE USUARIO</h4></div>
                 <div class="col-2 mb-xl-0 mb-2">
-                    {{ html()->modelForm($user, 'PUT',route('admin.users.update',$user))->open() }}
-                    <input type="hidden" name="id" value="{{$user['id']}}">
-                    <input type="hidden" name="data_us" value="{{$user['id']}}">
                     @if ($user['active']!=0)
                     <h4><input type="submit" class="btn btn-danger h4" name="quit" value="Quitar Todos" id="quit"></h4>
-                    @endif
-                    {{ html()->form()->close() }}     
+                    @endif   
                 </div>
             </div>
         </div>
@@ -128,7 +124,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                         @foreach ($roles as $role=>$val)
                             @if((stripos($val['name'],'spme')!==false))
                                 <div class="input-group">
-                                    <div class="m-2">{{ html()->checkbox($val['name'])->class('form-check-input') }}</div>
+                                    <div class="m-2">{{ html()->checkbox($val['name'],$checked =$user->hasRole($val['name']),$value = $val['name'])->class('form-check-input') }}</div>
                                     <div class="m-2 text-dark">{{$val['descripcion']}}:</div>
                                 </div>
                             @endif
@@ -141,7 +137,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                         @foreach ($roles as $role=>$val)
                             @if((stripos($val['name'],'mir')!==false))
                                 <div class="input-group">
-                                    <div class="m-2">{{ html()->checkbox($val['name'])->class('form-check-input') }}</div>
+                                    <div class="m-2">{{ html()->checkbox($val['name'],$checked =$user->hasRole($val['name']),$value = $val['name'])->class('form-check-input') }}</div>
                                     <div class="m-2 text-dark">{{$val['descripcion']}}:</div>
                                 </div>
                             @endif
@@ -154,7 +150,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                         @foreach ($roles as $role=>$val)
                             @if((stripos($val['name'],'asm')!==false))
                                 <div class="input-group">
-                                    <div class="m-2">{{ html()->checkbox($val['name'])->class('form-check-input') }}</div>
+                                    <div class="m-2">{{ html()->checkbox($val['name'],$checked =$user->hasRole($val['name']),$value = $val['name'])->class('form-check-input') }}</div>
                                     <div class="m-2 text-dark">{{$val['descripcion']}}:</div>
                                 </div>
                             @endif

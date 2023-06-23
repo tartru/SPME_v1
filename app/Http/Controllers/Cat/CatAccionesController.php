@@ -23,14 +23,14 @@ class CatAccionesController extends Controller
         $cat_acciones = $this->cat_acciones->Obtener();
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_acciones',
-            'breadcrumb'  => ['Administrar' => route('admin_index'), 'Acciones' => route('admin_acciones')
+            'submenu_active' => 'admin.acciones.index',
+            'breadcrumb'  => ['Administrar' => route('admin.index'), 'Acciones' => route('admin.acciones.index')
         ],
             'rows'        => $cat_acciones,
         ];
 
 
-        return view('cat/AccionesList',$data);
+        return view('cat.AccionesList',$data);
     }
 
 }

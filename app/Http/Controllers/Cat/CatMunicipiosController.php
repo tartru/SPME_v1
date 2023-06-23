@@ -27,8 +27,8 @@ class CatMunicipiosController extends Controller
         //regiones
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_municipios',
-            'breadcrumb'  => ['Administrar' => route('admin_index'), 'Regiones' => route('admin_municipios')],
+            'submenu_active' => 'admin.municipios',
+            'breadcrumb'  => ['Administrar' => route('admin.index'), 'Regiones' => route('admin.municipios')],
             'rows'        => $cat_municipios,
         ];
         return view('Cat\MunicipiosList',$data);
@@ -38,10 +38,10 @@ class CatMunicipiosController extends Controller
                  
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_municipios',
+            'submenu_active' => 'admin.municipios',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Municipios' => route('admin_municipios'),
+                'Administrar' => route('admin.index'), 
+                'Municipios' => route('admin.municipios'),
             ],
             'rows'        => $this->cat_municipios->ObteterMunicipiosyRegionyEstado(),
             'catalogos'   => [
@@ -51,7 +51,7 @@ class CatMunicipiosController extends Controller
         ];
 
         //return $data;
-       return view('Cat/MunicipiosList',$data);
+       return view('Cat.MunicipiosList',$data);
     }
 
     public function CatMunicipiId(){
@@ -60,14 +60,14 @@ class CatMunicipiosController extends Controller
         //regiones
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_municipios',
+            'submenu_active' => 'admin.municipios',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Regiones' => route('admin_municipios'),
+                'Administrar' => route('admin.index'), 
+                'Regiones' => route('admin.municipios'),
             ],
             'rows'        => $cat_municipios,
         ];
-        //return view('Cat\MunicipiosList',$data);
-        return $cat_municipios;
+        return view('Cat.MunicipiosList',$data);
+        //return $cat_municipios;
     }
 }

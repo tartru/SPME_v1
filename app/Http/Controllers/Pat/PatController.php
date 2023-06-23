@@ -36,8 +36,8 @@ class PatController extends Controller
 
     
             $data = [
-                'menu_active'   => 'admin_entidades_federativas',
-                'breadcrumb'    => ['Administrar' => route('admin_index'), 'Entidades federativas' => route('admin_entidades_federativas')],
+                'menu_active'   => 'admin.entidades_federativas',
+                'breadcrumb'    => ['Administrar' => route('admin.index'), 'Entidades federativas' => route('admin.entidades_federativas')],
                 'rows'        => $tabla->get(),
                 'catalogos'   => [
                     'regiones'  => $regiones->get(),

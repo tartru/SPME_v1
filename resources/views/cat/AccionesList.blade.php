@@ -17,7 +17,20 @@
 
 @section('content')
 
-<div class="widget-content widget-content-area br-8">
+<div class="widget-content">
+     <!-- Variables -->
+     @php 
+     $permisos=[]; 
+     @endphp               
+     @can('spme.admin.roles')
+         @php $permisos['update']='admin.roles.update';@endphp   
+     @endcan
+     @can('spme.admin.roles')
+         @php $permisos['delete']='admin.roles.delete'; @endphp 
+     @endcan
+     @can('spme.admin.roles')
+         @php $permisos['create']='admin.roles.create'; @endphp 
+     @endcan
 
     @include('layouts.tableA', ['table_data' => $rows, 'table_config' => [
         'headers' => [

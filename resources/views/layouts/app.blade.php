@@ -80,6 +80,8 @@
 
                         <div class="row layout-top-spacing">
 
+                            @include('layouts.message')
+
                             @yield('content')
                 
                 

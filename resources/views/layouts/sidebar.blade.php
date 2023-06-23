@@ -10,49 +10,49 @@ if (!isset($submenu_active)){
     //nombre de ruta => nombre a mostrar
     $_side_menu_tree = [
         'cat_estaticos' => [
-            'admin_estatus'                 => 'Estatus',
-            'admin_acciones'                => 'Acciones',
-            'admin_tipo_capturas'           => 'Tipo de Capturas',
-            'admin_frecuencias_mediciones'  => 'Frec. Medicion',
-            'admin_origenes_presupuestales' => 'Org. Presupuestales',
-            'admin_regiones'                => 'Regiones',
-            'admin_entidades_federativas'   => 'Entidades Federativas',
-            'admin_municipios'              => 'Municipios',
+            'admin.estatus.index'                 => 'Estatus',
+            'admin.acciones.index'                => 'Acciones',
+            'admin.tipo_capturas'           => 'Tipo de Capturas',
+            'admin.frecuencias_mediciones'  => 'Frec. Medicion',
+            'admin.origenes_presupuestales' => 'Org. Presupuestales',
+            'admin.regiones'                => 'Regiones',
+            'admin.entidades_federativas'   => 'Entidades Federativas',
+            'admin.municipios'              => 'Municipios',
         ],
         'configuraciones'=> [
-            'admin_config'             => 'Roles',
-            'admin.usuarios.index'           => 'Usuarios',
-            'admin_bitacora'           => 'Bitacora',
-            'admin_plantillas_correos' => 'Plantillas Correos',
+            'admin.roles.index'        => 'Roles',
+            'admin.users.index'        => 'Usuarios',
+            'admin.bitacora'           => 'Bitacora',
+            'admin.plantillas_correos' => 'Plantillas Correos',
         ],
         'grupos_captura'=> [
-            'admin_gc_claves'      =>   'Grupos Claves',
-            'admin_grupos_captura' => 'Grupos Caprtura',
+            'admin.gc_claves'      =>   'Grupos Claves',
+            'admin.grupos_captura' => 'Grupos Caprtura',
         ],
         'catalogos_pat'=> [
-            'admin_programas_institucionales' => 'Prog. Institucionales',
-            'admin_objetivos_pat'             => 'Objetivos Pat',
-            'admin_estrategias_pat'           => 'Estrategias Pat',
-            'admin_acciones_puntuales_pat'    => 'Acciones Puntuales',
+            'admin.programas_institucionales' => 'Prog. Institucionales',
+            'admin.objetivos_pat'             => 'Objetivos Pat',
+            'admin.estrategias_pat'           => 'Estrategias Pat',
+            'admin.es_puntuales_pat'    => 'Acciones Puntuales',
         ],
         'catalogos_mir'=> [
-            'admin_programas_presupuestales' => 'Prog. Presupuestales',
-            'admin_niveles_mir'              => 'Niveles Mir',
-            'admin_objetivos_mir'            => 'Objetivos Mir',
+            'admin.programas_presupuestales' => 'Prog. Presupuestales',
+            'admin.niveles_mir'              => 'Niveles Mir',
+            'admin.objetivos_mir'            => 'Objetivos Mir',
         ],
         'documentos'=> [
-            'admin_categorias_documentos' => 'Cat. Documentos',
-            'admin_documentos'            => 'Documentos',
+            'admin.categorias_documentos' => 'Cat. Documentos',
+            'admin.documentos'            => 'Documentos',
         ],
         'articulos'=> [
-            'admin_categorias_articulos' => 'Cat. Articulos',
-            'admin_articulos'            => 'Articulos',
+            'admin.categorias_articulos' => 'Cat. Articulos',
+            'admin.articulos'            => 'Articulos',
         ],
         'calendario'=> [
-            'admin_calendario'            => 'Calendario',
+            'admin.calendario'            => 'Calendario',
         ],
         'cuenta'=> [
-            'admin_profile'            => 'Profile',
+            'admin.users.profile'            => 'Profile',
         ],
         'mon_asm'=> [
             'asm_fichas'            => 'Ficha Mon. y Eva.',
@@ -100,7 +100,7 @@ if (!isset($submenu_active)){
                     </div>
                 </a>
             </li>
-
+            @can(['spme.admin.home'])
             {{-- Menu administrar --}}
             <li class="menu {{ (isset($menu_active)&&$menu_active=="Administrar") ? 'active' : '' }}">
                 <a href="#menu-administrar" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -154,13 +154,14 @@ if (!isset($submenu_active)){
                             </li>
                         @endforeach
                     </ul>
-
+                    @can('pat.admin.home')
                     <ul class="collapse submenu list-unstyled" id="menu-administrar" data-bs-parent="#accordionSidebar">
                         <li class="menu menu-heading">
                             <div class="heading">
                                 <span>CATALOGOS PAT</span>
                             </div>
                         </li>
+                    @endcan
                         
                         @foreach ($_side_menu_tree['catalogos_pat'] as $menu => $nombre) 
                             <li class="{{(isset($submenu_active)&&$submenu_active==$menu) ? 'active' : '' }}">
@@ -168,7 +169,7 @@ if (!isset($submenu_active)){
                             </li>
                         @endforeach
                     </ul>
-
+                    @can('mir.admin.home')
                     <ul class="collapse submenu list-unstyled" id="menu-administrar" data-bs-parent="#accordionSidebar">
                         <li class="menu menu-heading">
                             <div class="heading">
@@ -182,6 +183,7 @@ if (!isset($submenu_active)){
                             </li>
                         @endforeach
                     </ul>
+                    @endcan
 
                     <ul class="collapse submenu list-unstyled" id="menu-administrar" data-bs-parent="#accordionSidebar">
                         <li class="menu menu-heading">
@@ -228,7 +230,6 @@ if (!isset($submenu_active)){
 
                 </ul>
             </li>
-
             {{-- Menu Planeacion --}}
             <li class="menu {{ (isset($menu_active)&&$menu_active=="Planeacion") ? 'active' : '' }}">
                 <a href="#menu-planeacion" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -267,6 +268,7 @@ if (!isset($submenu_active)){
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                 </a>
+                @can('asm.admin.home')
                 {{-- S-Menu ASM --}}
                 <ul class="collapse submenu list-unstyled" id="menu-monitoreo" data-bs-parent="#accordionSidebar">
                         <li class="menu menu-heading">
@@ -280,7 +282,9 @@ if (!isset($submenu_active)){
                         </li>
                     @endforeach
                 </ul>
+                @endcan
             </li>
+
 
             {{-- Menu Evaluacion --}}
             <li class="menu {{ (isset($menu_active)&&$menu_active=="Evaluacion") ? 'active' : '' }}">
@@ -308,6 +312,8 @@ if (!isset($submenu_active)){
                     </li>
                 </ul>
             </li>
+            @endcan
+
 
             {{-- Menu Cuenta --}}
             <li class="menu {{ (array_key_exists($submenu_active,$_side_menu_tree['cuenta'])) ? 'active' : '' }}">

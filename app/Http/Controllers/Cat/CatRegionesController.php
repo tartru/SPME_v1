@@ -23,10 +23,10 @@ class CatRegionesController extends Controller
         $cat_regiones = $this->cat_regiones->Obtener();
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_regiones',
+            'submenu_active' => 'admin.regiones',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Regiones' => route('admin_regiones'),
+                'Administrar' => route('admin.index'), 
+                'Regiones' => route('admin.regiones'),
             ],
             'rows'        => $cat_regiones,
         ];
@@ -37,16 +37,16 @@ class CatRegionesController extends Controller
                 
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_regiones',
+            'submenu_active' => 'admin.regiones',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Regiones' => route('admin_regiones'),
+                'Administrar' => route('admin.index'), 
+                'Regiones' => route('admin.regiones'),
             ],
             'rows'        => $this->cat_regiones->ObteterRegionesyNumEstados(),
         ];
 
         //return view('Cat/CatRegiones', ['cat_regions' => $cat_regions]);
-        return view('cat/RegionesList',$data);
+        return view('cat.RegionesList',$data);
     }
 
         public function prueba() {

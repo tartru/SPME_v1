@@ -18,13 +18,13 @@ class CatProgramasPresupuestalesController extends Controller
         $cat_programas_presupuestales = $this->cat_programas_presupuestales->All();
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_programas_presupuestales',
+            'submenu_active' => 'admin.programas_presupuestales',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Prog. Presupuestales' => route('admin_programas_presupuestales'),
+                'Administrar' => route('admin.index'), 
+                'Prog. Presupuestales' => route('admin.programas_presupuestales'),
             ],
             'rows'        => $cat_programas_presupuestales,
         ];
-        return view('Cat/ProgramasPresupuestalesList',$data);
+        return view('Cat.ProgramasPresupuestalesList',$data);
     }
 }

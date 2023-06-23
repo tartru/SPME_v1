@@ -20,10 +20,10 @@ class CatFrecuenciasMedicionesController extends Controller
         
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_frecuencias_mediciones',
+            'submenu_active' => 'admin.frecuencias_mediciones',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Estatus' => route('admin_frecuencias_mediciones')
+                'Administrar' => route('admin.index'), 
+                'Estatus' => route('admin.frecuencias_mediciones')
             ],
             'rows'        => $cat_frecuencias_mediciones
         ];

@@ -20,10 +20,10 @@ class CatTipoCapturasController extends Controller
         
         $data = [
             'menu_active' => 'Administrar',
-            'submenu_active' => 'admin_tipo_capturas',
+            'submenu_active' => 'admin.tipo_capturas',
             'breadcrumb'  => [
-                'Administrar' => route('admin_index'), 
-                'Tipos de captura' => route('admin_tipo_capturas'),
+                'Administrar' => route('admin.index'), 
+                'Tipos de captura' => route('admin.tipo_capturas'),
             ],
             'rows'        => $cat_tipo_capturas,
         ];

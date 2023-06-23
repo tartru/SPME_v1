@@ -3,7 +3,7 @@
 $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $table_config['id'] : 'zero-config';
 
 @endphp
-<div>
+<div class="widget-content widget-content-area br-8">
     {{-- Bloques previos --}}
         @if ( !empty($table_config) && !empty($table_config['previous']) )
             @foreach ( $table_config['previous'] as $_t_prev_key => $_t_prev )
@@ -15,13 +15,12 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
             @endforeach
         @endif
     {{-- Bloques previos --}}
-
-
     {{-- Filtrado por columna --}}
         @if ( !empty($table_config) && !empty($table_config['actions']) && !empty($table_config['actions']['search_columns']) )
             @if (!empty($table_config) && !empty($table_config['actions']) && !empty($table_config['actions']['extras_accordion']) )
                 <div id="{{ $_data_table_id }}-filter-accordion-wrapper" class="dataTables-filter-wrapper no-outer-spacing accordion">
                     <div class="card">
+                        
                         <div class="card-header" id="{{ $_data_table_id }}-filter-accordion-heading">
                             <section class="mb-0 mt-0">
                                 <div role="menu" class="collapsed" data-bs-toggle="collapse" data-bs-target="#{{ $_data_table_id }}-filter-accordion" aria-expanded="false" aria-controls="{{ $_data_table_id }}-filter-accordion">
@@ -81,7 +80,6 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                             @endif
                         </label>
                     </div>
-
                 @if ( ($_t_f_cont + 1) % 4 == 0 || ($_t_f_cont + 1) == $_sc_cant )
                     </div>
                 @endif
@@ -102,7 +100,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
             @endif
         @endif
     {{-- Filtrado por columna --}}
-
+    
     {{-- Tabla de datos --}}
         <table id="{{ $_data_table_id }}" class="table table-striped dt-table-hover text-wrap" style="width:auto;">
             {{-- Encabezados de tabla --}}
@@ -114,8 +112,15 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                     @foreach ( $table_config['headers'] as $_h_key => $_h_val )
                         <th data-datatable-column="{{ $_h_key }}">{{ $_h_val }}</th>
                     @endforeach
+                    {{-- celda de titulo de botones de permisos --}}
                     @if (!empty($permissions))
-                        <th>Acciónes</th>
+                        <th><div class="row">
+                                <div class="col">Acciónes<div>
+                                @if ( !empty($permissions['create']))
+                                    <a type="button" class="btn btn-success btn-sm m-1 p-1 rounded" href="{{route($permissions['create'])}}">Agregar</a>
+                                @endif
+                            </div>
+                        </th>
                     @endif
             </thead>
             {{-- cuerpo de tabla --}}
@@ -144,11 +149,16 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                                     @endif
                                 </td>
                             @endforeach
+                            
+                            {{-- celda de titulo de botones de permisos --}}
                             @if ( !empty($permissions))
                                 <td>
-                                    <div class="btn-group">
-                                        @if ( !empty($permissions['edit']))
-                                            <a type="button" class="btn btn-primary" href="{{$permissions['edit']}}/{{$row['id']}}">Editar </a>
+                                    <div class="btn-group float-right">
+                                        @if ( !empty($permissions['update']))
+                                            <a type="button" class="btn btn-primary btn-sm m-1 p-1 rounded" href="{{route($permissions['update'],$row)}}">Editar</a>
+                                        @endif
+                                        @if ( !empty($permissions['delete']))
+                                            <a type="button" class="btn btn-danger btn-sm m-1 p-1 rounded" href="{{route($permissions['delete'],$row)}}">Eliminar</a>
                                         @endif
                                     </div>
                                 </td>
@@ -177,9 +187,12 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
 
                             @if ( !empty($permissions))
                                 <td>
-                                    <div class="btn-group">
-                                        @if ( !empty($permissions['edit']))
-                                        <a type="button" class="btn btn-primary" href="{{route ($permissions['edit'],$row)}}">Editar</a>
+                                    <div class="btn-group float-right">
+                                        @if ( !empty($permissions['update']))
+                                            <a type="button" class="btn btn-primary btn-sm m-1 p-1 rounded" href="{{route($permissions['update'],$row)}}">Editar</a>
+                                        @endif
+                                        @if ( !empty($permissions['delete']))
+                                            <a type="button" class="btn btn-danger btn-sm m-1 p-1 rounded" href="{{route($permissions['delete'],$row)}}">Eliminar</a>
                                         @endif
                                     </div>
                                 </td>
