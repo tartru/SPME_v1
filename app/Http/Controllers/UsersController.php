@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Error;
 use Spatie\Permission\Models\Role;
-use Carbon\Carbon;
+use App\Models\Users_system;
 
 
 class UsersController extends Controller
@@ -78,8 +78,7 @@ class UsersController extends Controller
         $us = User::findOrFail($request->id);
         if ($request->has("active")){
             $us->active = $request->active;
-            $us->active_at =Carbon::now();
-            $msg = ($request->active === 0) ? 'Usuario Desactivado' : 'Usuario Activado';
+            $msg = ($request->active == 0) ? 'Usuario Desactivado' : 'Usuario Activado';
             if($us->save()){
                 session()->flash('msg-success' ,$msg);
                 return redirect()->route('admin.users.edit',$us);
@@ -118,8 +117,30 @@ class UsersController extends Controller
 
         return redirect()->route('admin.users.edit',$us);
     }
+
+    public function user_system (request $request, User $user) { //para agregar roles por tipo de sistema
+        $form = $request->except('_method','_token');
+        $vaciar=Users_system::where('user_id', $user)->delete();
+        if(!empty($vaciar)){
+            session()->flash('msg-warning' ,'No se actualizaron los sistemas del usuario - Intente nuevamente');
+            return redirect()->route('admin.users.edit',$user);
+        }
+        $syst=new Users_system;
+        foreach ($form as $req) {
+            // $syst->user_id = $user;
+            // $syst->cat_system_id = $req;
+            $registro = $syst->save();
+            //$registro = Users_system::save(user_id = User->id,cat_system_id = $req);
+            if(empty($registro)){
+                session()->flash('msg-warning' ,'No se actualizaron los sistemas - Intente nuevamente');
+                return redirect()->route('admin.users.edit',$user['id']);
+            }
+        }
+        session()->flash('msg-success' ,'Actualizado - Se actualizaron los sistemas');
+        return redirect()->route('admin.users.edit',$user['id']);
+    }
    
 
     
 
-}  //fin de clase
+}  //fin de clase  //Users_system::save('user_id'= $user->id, );

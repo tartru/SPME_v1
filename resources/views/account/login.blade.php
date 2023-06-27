@@ -100,6 +100,13 @@
                                             <button class="btn btn-primary-cnf w-100">Ingresar</button>
                                         </div>
                                     </div>
+
+                                    <div class="col-12 text-center">
+                                        <div class="mb-4">
+                                            <a class="btn" href="{{ route('login.google') }}"><img src="{{ asset('images/google.png'); }}" alt="google">
+                                            </a>
+                                        </div>
+                                    </div>
                                     
                                     
                                     {{--

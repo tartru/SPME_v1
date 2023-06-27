@@ -100,7 +100,7 @@ if (!isset($submenu_active)){
                     </div>
                 </a>
             </li>
-            @can(['spme.admin.home'])
+        @can(['spme.admin.catalogos.index'])
             {{-- Menu administrar --}}
             <li class="menu {{ (isset($menu_active)&&$menu_active=="Administrar") ? 'active' : '' }}">
                 <a href="#menu-administrar" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -161,7 +161,7 @@ if (!isset($submenu_active)){
                                 <span>CATALOGOS PAT</span>
                             </div>
                         </li>
-                    @endcan
+                    
                         
                         @foreach ($_side_menu_tree['catalogos_pat'] as $menu => $nombre) 
                             <li class="{{(isset($submenu_active)&&$submenu_active==$menu) ? 'active' : '' }}">
@@ -169,6 +169,8 @@ if (!isset($submenu_active)){
                             </li>
                         @endforeach
                     </ul>
+                    @endcan
+
                     @can('mir.admin.home')
                     <ul class="collapse submenu list-unstyled" id="menu-administrar" data-bs-parent="#accordionSidebar">
                         <li class="menu menu-heading">
@@ -230,6 +232,7 @@ if (!isset($submenu_active)){
 
                 </ul>
             </li>
+        @endcan
             {{-- Menu Planeacion --}}
             <li class="menu {{ (isset($menu_active)&&$menu_active=="Planeacion") ? 'active' : '' }}">
                 <a href="#menu-planeacion" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -243,16 +246,13 @@ if (!isset($submenu_active)){
                 </a>
                 <ul class="collapse submenu list-unstyled" id="menu-planeacion" data-bs-parent="#accordionSidebar">
                     <li>
-                        <a href="#"> List </a>
+                        <a href="#"> ASM </a>
                     </li>
                     <li>
-                        <a href="#"> Preview </a>
+                        <a href="#"> MIR </a>
                     </li>
                     <li>
-                        <a href="#"> Add </a>
-                    </li>
-                    <li>
-                        <a href="#"> Edit </a>
+                        <a href="#"> PAT </a>
                     </li>
                 </ul>
             </li>
@@ -282,9 +282,8 @@ if (!isset($submenu_active)){
                         </li>
                     @endforeach
                 </ul>
-                @endcan
+                @endcan   
             </li>
-
 
             {{-- Menu Evaluacion --}}
             <li class="menu {{ (isset($menu_active)&&$menu_active=="Evaluacion") ? 'active' : '' }}">
@@ -312,7 +311,7 @@ if (!isset($submenu_active)){
                     </li>
                 </ul>
             </li>
-            @endcan
+      
 
 
             {{-- Menu Cuenta --}}

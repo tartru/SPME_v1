@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Cat\Cat_system;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthenticationController extends Controller
 {
@@ -106,9 +107,8 @@ class AuthenticationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function authentication($request) {
-    
-            extract($request);
+    public function authentication($dependencias) {
+            extract($dependencias);
             $this->url = $auth_url;
 
         $restClient = new \RestClient([
@@ -213,6 +213,55 @@ class AuthenticationController extends Controller
             }
         }
         return view('account.login')->with('message',"Tu Sesión expiró, Inicia nuevamente");
+    }
+
+    public function google() {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function google_auth() {
+        $userg = Socialite::driver('google')->user();
+        $user = $this->usu->getByMail($userg->mail);
+        //return var_dump($userg);
+        if (isset($user['status'])&&$user['status']!=200) {
+            $data = [
+                'name'      => str_replace(" ",".",$userg->name),
+                'password' => Hash::make('Password'),
+                'email'     => $userg->email,
+                'full_name' => $userg->name,
+                'puesto'    => 'Usuario Externo',
+                'area'      => 'Usuario Externo',
+                'last_ip'   => empty($_SERVER["REMOTE_ADDR"]) ? "Desconocida" : $_SERVER["REMOTE_ADDR"],
+                'type'      => "Externo",
+            ];
+            $user = ['status'=>200,'usuario'=>$this->usu::create($data)];
+             //return var_dump($user);
+            if (empty($user['usuario']) ) {
+                return redirect('login')->with('message',"No se pudo guardar al usuario");
+            }
+             Auth::login($user['usuario']);
+        }
+        if (!Auth::check()) { 
+            $credentials = ([
+                'name'=>(string) $user['usuario']->value('name'),
+                'email'=>(string) $user['usuario']->value('email'),
+            ]);
+            Auth::attempt($credentials, false);
+        }
+        if (Auth::check()) { 
+            session()->regenerate();
+            session(['token' => $userg->token,'us'=>$user['usuario']->value('id')]);
+            if((auth()->user()->role)==0) {
+                return redirect()->route('welcome');
+            }
+            if((auth()->user()->role)!=0) {
+                return redirect()->route('home');
+            }
+        }
+        else {
+            return redirect('login')->with('message','Problemas de Inicio - Reintente');
+        }
+        
     }
  
 } //FIN CLASE

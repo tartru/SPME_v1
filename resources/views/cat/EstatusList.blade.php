@@ -38,12 +38,12 @@
             'table_data' => $row,
             // type = tipo de campo| tamaño | requerido | valor default
             'headers' => [
-                'id'        => ['txt'=>'ID','type'=>'int-4-no-auto'],
-                'valor'     => ['txt'=>'Valor','type'=>'int-4-si-0'],
-                'nombre'      => ['txt'=>'Nombre','type'=>'varchar-250-no-no'],
+                'id'        => ['txt'=>'ID','type'=>'tint-127-no-auto'],
+                'valor'     => ['txt'=>'Valor','type'=>'tint-127-si-0'],
+                'nombre'      => ['txt'=>'Nombre','type'=>'varchar-250-si-no'],
                 'descripcion'  => ['txt'=>'Descripción','type'=>'varchar-250-si-null'],
-                'active'    => ['txt'=>'Activo','type'=>'int-4-si-1'],
-                'deleted'   => ['txt'=>'Eliminado','type'=>'int-4-si-0'],
+                'active'    => ['txt'=>'Activo','type'=>'int-1-si-1'],
+                'deleted'   => ['txt'=>'Eliminado','type'=>'int-1-si-0'],
                 'created_at' => ['txt'=>'Creado el','type'=>'timestamp-2-no-null'],
                 'updated_at' => ['txt'=>'Actualizado el','type'=>'timestamp-2-no-now'],
                 'activated_at' => ['txt'=>'Activado el','type'=>'timestamp-2-no-null'],
@@ -62,6 +62,7 @@
                     'nombre'      => 'Estatus',
                     'descripcion' => 'Descripción',
                     'active'      => 'Activo',
+                    'deleted'     => 'Eliminado',
                 ],
                 'with_pos' => true,
                 'actions'  => [

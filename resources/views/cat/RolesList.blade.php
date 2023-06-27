@@ -21,16 +21,16 @@
     @php 
     $permisos=[]; 
     @endphp               
-    @can('spme.admin.roles')
-        @php $permisos['update']='admin.roles.update';@endphp   
+    @can('spme.admin.roles.update')
+        @php $permisos['update']='admin.roles.update'; @endphp   
     @endcan
-    @can('spme.admin.roles')
+    @can('spme.admin.roles.delete')
         @php $permisos['delete']='admin.roles.delete'; @endphp 
     @endcan
-    @can('spme.admin.roles')
+    @can('spme.admin.roles.create')
         @php $permisos['create']='admin.roles.create'; @endphp 
     @endcan
-    @if(isset($update)){
+    @if(isset($update))
         @include('layouts.FormEdit', [
             'table_data' => $rows, 
             'table_config' => [
@@ -39,15 +39,15 @@
                 'name'   => ['txt'=>'Nombre','type'=>'varchar-125-no-no'],
                 'descripcion'  => ['txt'=>'Descripción','type'=>'varchar-125-si-null'],
                 'nivel'  => ['text'=>'Nivel','type'=>'int-4-si-0'],
-                'guard_name' => ['txt'=>'Guard Name','type'=>'varchar-125-si-null']
-                'created_at' => ['txt'=>'Creado','type'=>'timestamp--si-'],
+                'guard_name' => ['txt'=>'Guard Name','type'=>'varchar-125-si-null'],
+                'created_at' => ['txt'=>'Creado','type'=>'timestamp--si-now'],
                 'updated_at' => ['txt'=>'Actualizado','type'=>'timestamp--si-now'],
                 ],
             'with_pos' => false,
             'actions'  => [
                 'pagination' => [
                     'options' => [10,30,50,100],
-                    'rows'    => 15
+                    'rows'    => 15,
                 ],
                 'ordering'         => true,
                 'searching'        => true,
@@ -57,33 +57,35 @@
         ],
         'permissions' => $permisos,
         ])
-        
-    }
-    @else {
-    @include('layouts.tableA', ['table_data' => $rows, 'table_config' => [
-                    'headers' => [
-                        'id'       => 'ID',
-                        'name'      => 'Nombre',
-                        'descripcion' => 'Descripción',
-                        'nivel'      => 'Nivel',
-                        'create_at'      => 'Creado',
-                        'update_at'      => 'Actualizado',
+    
+    @else 
+        @include('layouts.tableA', [
+            'table_data' => $rows,
+            'table_config' => [
+                'headers' => [
+                    'id'       => 'ID',
+                    'name'      => 'Nombre',
+                    'descripcion' => 'Descripción',
+                    'nivel'      => 'Nivel',
+                    'guard_name'      => 'Nombre de Grupo',
+                    'created_at'      => 'Creado el',
+                    'updated_at'      => 'Actualizado el',
+                ],
+                'with_pos' => false,
+                'actions'  => [
+                    'pagination' => [
+                        'options' => [10,30,50,100],
+                        'rows'    => 15,
                     ],
-                    'with_pos' => false,
-            'actions'  => [
-                'pagination' => [
-                    'options' => [10,30,50,100],
-                    'rows'    => 15
+                    'ordering'         => true,
+                    'searching'        => true,
+                    'extras_accordion' => false,
+                    'export_data'      => true,
                 ],
-                'ordering'         => true,
-                'searching'        => true,
-                'extras_accordion' => false,
-                'export_data'      => true,
             ],
-        ],
-        'permissions' => $permisos,
-        ])
-    }
+            'permissions' => $permisos,
+            ])
+    @endif
 </div>
 
 @endsection

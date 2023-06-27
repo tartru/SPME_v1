@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cat_accione extends Model
 {
+    protected $guarded = ['deleted','active'];
+    
     public function Obtener() {
         return Cat_accione::all();
     }

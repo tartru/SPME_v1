@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
  
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +16,25 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('google')->redirect();
-});
+
+
+/*
+//Account
+    Route::get('login', [App\Http\Controllers\AuthenticationController::class,'auth_login'])->name('login');
+    Route::post('login', [App\Http\Controllers\AuthenticationController::class,'authenticate'])->name('login'); 
+    Route::get('validate',[App\Http\Controllers\AuthenticationController::class,'validate_token'])->name('validate');
+    Route::get('logout',[App\Http\Controllers\AuthenticationController::class,'cerrar'])->name('logout');
+//Account
+*/
+
+//login
+Route::get('login', [App\Http\Controllers\AuthenticationController::class,'auth_login'])->name('login');
+Route::post('login', [App\Http\Controllers\AuthenticationController::class,'authenticate'])->name('login'); 
+Route::get('validate',[App\Http\Controllers\AuthenticationController::class,'validate_token'])->name('validate');
+Route::get('logout',[App\Http\Controllers\AuthenticationController::class,'logout'])->name('logout');
+Route::get('login/google/', [App\Http\Controllers\AuthenticationController::class,'google'])->name('login.google');
+Route::get('/callback-url', [App\Http\Controllers\AuthenticationController::class,'google_auth'])->name('auth.google');
+
  
 Route::get('/auth/callback', function () {
     $user = Socialite::driver('google')->user();
@@ -42,21 +57,6 @@ Route::get('/auth/callback', function () {
  
     return redirect('/dashboard');
 });
-
-/*
-//Account
-    Route::get('login', [App\Http\Controllers\AuthenticationController::class,'auth_login'])->name('login');
-    Route::post('login', [App\Http\Controllers\AuthenticationController::class,'authenticate'])->name('login'); 
-    Route::get('validate',[App\Http\Controllers\AuthenticationController::class,'validate_token'])->name('validate');
-    Route::get('logout',[App\Http\Controllers\AuthenticationController::class,'cerrar'])->name('logout');
-//Account
-*/
-
-//Account
-Route::get('login', [App\Http\Controllers\AuthenticationController::class,'auth_login'])->name('login');
-Route::post('login', [App\Http\Controllers\AuthenticationController::class,'authenticate'])->name('login'); 
-Route::get('validate',[App\Http\Controllers\AuthenticationController::class,'validate_token'])->name('validate');
-Route::get('logout',[App\Http\Controllers\AuthenticationController::class,'logout'])->name('logout');
 //Account
 
 /*//General
@@ -91,16 +91,18 @@ Route::get('logout',[App\Http\Controllers\AuthenticationController::class,'logou
          Route::get('Cat/estatus', [App\Http\Controllers\Cat\CatEstatusController::class,'index'])->middleware('auth')->can('spme.admin.catalogos.index')->name('admin.estatus.index');
          Route::get('Cat/estatus/update/{row}', [App\Http\Controllers\Cat\CatEstatusController::class,'edit'])->middleware('auth')->can('spme.admin.catalogos.update')->name('admin.estatus.edit');
          Route::put('Cat/estatus/update/{row}', [App\Http\Controllers\Cat\CatEstatusController::class,'update'])->middleware('auth')->can('spme.admin.catalogos.update')->name('admin.estatus.update');
-         Route::get('Cat/estatus/create/', [App\Http\Controllers\Cat\CatEstatusController::class,'store'])->middleware('auth')->can('spme.admin.catalogos.create')->name('admin.estatus.create');
-         Route::put('Cat/estatus/create/', [App\Http\Controllers\Cat\CatEstatusController::class,'create'])->middleware('auth')->can('spme.admin.catalogos.create')->name('admin.estatus.store');
-         Route::delete('Cat/estatus/{row}', [App\Http\Controllers\Cat\CatEstatusController::class,'destroy'])->middleware('auth')->can('spme.admin.catalogos.delete')->name('admin.estatus.delete');
+         Route::get('Cat/estatus/create/', [App\Http\Controllers\Cat\CatEstatusController::class,'create'])->middleware('auth')->can('spme.admin.catalogos.create')->name('admin.estatus.create');
+         Route::post('Cat/estatus/create/', [App\Http\Controllers\Cat\CatEstatusController::class,'store'])->middleware('auth')->can('spme.admin.catalogos.create')->name('admin.estatus.store');
+         Route::delete('Cat/estatus/delete/{row}', [App\Http\Controllers\Cat\CatEstatusController::class,'destroy'])->middleware('auth')->can('spme.admin.catalogos.delete')->name('admin.estatus.delete');
     //Estatus
 
     //Acciones
         Route::get('Cat/acciones', [App\Http\Controllers\Cat\CatAccionesController::class, 'index'])->middleware('auth')->can('spme.admin.catalogos.index')->name('admin.acciones.index');
-        Route::get('Cat/acciones/{row}', [App\Http\Controllers\Cat\CatAccionesController::class, 'edit'])->middleware('auth')->can('spme.admin.catalogos.update')->name('admin.acciones.edit');
-        Route::put('Cat/acciones/{row}', [App\Http\Controllers\Cat\CatAccionesController::class, 'update'])->middleware('auth')->can('spme.admin.catalogos.update')->name('admin.acciones.update');
-        Route::delete('Cat/acciones/{row}', [App\Http\Controllers\Cat\CatAccionesController::class, 'destroy'])->middleware('auth')->can('spme.admin.catalogos.delete')->name('admin.acciones.delete');
+        Route::get('Cat/acciones/update/{row}', [App\Http\Controllers\Cat\CatAccionesController::class, 'edit'])->middleware('auth')->can('spme.admin.catalogos.update')->name('admin.acciones.edit');
+        Route::put('Cat/acciones/update/{row}', [App\Http\Controllers\Cat\CatAccionesController::class, 'update'])->middleware('auth')->can('spme.admin.catalogos.update')->name('admin.acciones.update');
+        Route::get('Cat/acciones/create/', [App\Http\Controllers\Cat\CatAccionesController::class,'create'])->middleware('auth')->can('spme.admin.catalogos.create')->name('admin.acciones.create');
+        Route::post('Cat/acciones/create/', [App\Http\Controllers\Cat\CatAccionesController::class,'store'])->middleware('auth')->can('spme.admin.catalogos.create')->name('admin.acciones.store');
+        Route::delete('Cat/acciones/delete/{row}', [App\Http\Controllers\Cat\CatAccionesController::class,'destroy'])->middleware('auth')->can('spme.admin.catalogos.delete')->name('admin.acciones.delete');
     //Acciones
 
     //Tipos de captura

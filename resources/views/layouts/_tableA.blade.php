@@ -155,18 +155,13 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                                 <td>
                                     <div class="btn-group float-right">
                                         @if ( !empty($permissions['update']))
-                                            <a type="button" class="btn-primary btn-sm m-1 p-1 rounded" href="{{route($permissions['update'],$row['id'])}}">Editar</a>
+                                            <a type="button" class="btn btn-primary btn-sm m-1 p-1 rounded" href="{{route($permissions['update'],$row)}}">Editar</a>
                                         @endif
                                         @if ( !empty($permissions['delete']))
-                                        {{ html()->modelForm($row,'delete',route($permissions['delete'],$row['id']))->id($row['id'])->open() }}
-                                            @if(($row['deleted'])==0)
-                                                <input type="hidden" name="deleted" value="1">
-                                                <button type="submit" form="{{$row['id']}}" class="btn btn-danger btn-sm m-1 p-1">Eliminar</button>
-                                            @else
-                                                <input type="hidden" name="deleted" value="0">
-                                                <button type="submit" form="{{$row['id']}}" class="btn btn-warning btn-sm m-1 p-1">Restaurar</button>
-                                            @endif    
-                                        {{ html()->form()->close() }}
+                                        <form action="{{route($permissions['delete'],$row)}}" method="POST">
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger btn-sm m-1 p-1">Eliminar</button>
+                                        </form>
                                         @endif
                                     </div>
                                 </td>
@@ -197,13 +192,11 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                                 <td>
                                     <div class="btn-group float-right">
                                         @if ( !empty($permissions['update']))
-                                            <div class="col">
-                                                <a type="button" class="btn btn-primary btn-sm m-1 p-1 rounded" href="{{route($permissions['update'],$row)}}">Editar</a>
-                                            </div>
+                                            <a type="button" class="btn btn-primary btn-sm m-1 p-1 rounded" href="{{route($permissions['update'],$row)}}">Editar</a>
                                         @endif
                                         @if ( !empty($permissions['delete']))
-                                        {{ html()->modelForm($row,'delete',route($permissions['delete'],$row['id']))->id($row['id'])->open() }}
-                                            <button  type="submit" form="{{$row['id']}}" class="btn btn-danger btn-sm m-1 p-1">Eliminar</button>
+                                        {{ html()->modelForm($row, 'delete',route($permissions['delete'],$row))->open() }}
+                                            <button type="submit" class="btn btn-danger btn-sm m-1 p-1">Eliminar</button>
                                         {{ html()->form()->close() }}
                                         @endif
                                     </div>

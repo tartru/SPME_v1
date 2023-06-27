@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cat_estatu extends Model
 {
-    //protected $fillable=['name','description','value];
-    protected $guarded=['active','deleted'];
+    //protected $fillable=['valor','nombre','descripcion'];
+    protected $guarded = ['deleted','active'];
 
     public function Obtener() {
         return Cat_estatu::all();

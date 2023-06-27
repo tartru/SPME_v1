@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     }
 
-// Busca usuario por nombre y lo retorna o el regresa false
+    // Busca usuario por nombre y lo retorna o el regresa false
     public function getByName($request) {
         //var_dump($request);
         if(!empty($request)){
@@ -78,7 +78,25 @@ class User extends Authenticatable
             return (['status' => 400,'message' => "No se recibio el nombre de usuario"]);
         }
     }
-// Busca usuario por nombre y lo retorna o el regresa false
+
+    // Busca usuario por email y lo retorna o el regresa false
+    public function getByMail($mail) {
+        //var_dump($request);
+        if(!empty($mail)){
+            $usuario = User::where('email',$mail)->get();
+            if(count($usuario) >= 1){
+                return (['status' => 200,'usuario' => $usuario]);
+            }
+            else
+            {
+                return (['status' => 401,'message' => "No se encontro el email de usuario"]);
+            }
+
+        }
+        else {
+            return (['status' => 400,'message' => "No se recibio el email de usuario"]);
+        }
+    }
      
 
 }
