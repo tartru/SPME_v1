@@ -16,9 +16,23 @@
 
 
 @section('content')
-    <div class="widget-content widget-content-area br-8">
-        <!-- Variables -->                
-        
+
+<div class="widget-content br-8">
+    <!-- Variables -->
+    @php 
+    $permisos=[];
+    $atras= (array_slice($breadcrumb, -2, 1));
+    //var_dump($atras);
+    @endphp               
+    @can('spme.admin.user.update')
+        @php $permisos['update']='admin.user.update';@endphp   
+    @endcan
+    @can('spme.admin.user.delete')
+        @php $permisos['delete']='admin.user.delete'; @endphp 
+    @endcan
+    @can('spme.admin.user.create')
+        @php $permisos['create']='admin.user.create'; @endphp 
+    @endcan
         @include('layouts.tableA', ['table_data' => $rows, 'table_config' => [
             'headers' => [
                 'id'     => 'id',
@@ -44,11 +58,7 @@
                 'export_data'      => true,
             ],
         ],
-        'permissions' => [
-            'edit'=>'admin.users.edit',
-            'delete'=>'admin.users.edit',
-            'creat'=>'admin.users.edit',
-        ],
+        'permissions' => $permisos,
         ])
         <!-- FIN Variables -->
     </div>

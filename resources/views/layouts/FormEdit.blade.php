@@ -55,7 +55,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                 @foreach ($headers as $_h_key => $_h_val)
                     {{-- @php dump ($_h_key); @endphp --}}
                         @php
-                            // type = [0]=tipo de campo| [1]=tamaño | [2]=requerido | [3]=valor default
+                            // type = [0]=tipo de campo| [1]=tamaño | [2]=requerido | [3]=valor default | [4]=editable
                             $conf = explode("-", $_h_val['type']);
                             $lar=ceil($conf[1]/6);
                             $req = ($conf[2]=="si") ? true : false;
