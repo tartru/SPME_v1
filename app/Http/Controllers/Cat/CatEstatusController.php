@@ -14,12 +14,12 @@ class CatEstatusController extends Controller
     const r_create = 'admin.estatus.create';
     const r_edit =  'admin.estatus.edit';
     const r_update = 'admin.estatus.update';
-    const vista = 'cat.EstatusList';
-    const t_nuevo = 'AGREGAR REGISTRO A CATALOGO DE ESTATUS'; 
-    const t_update ='EDITAR CATALOGO DE ESTATUS'; 
+    const vista = 'cat.EstatusList'; //return view('cat.EstatusList')
+    const t_ = 'ESTATUS';
+    const mm_ = 'Administrar';
     
-    public function __construct(Cat_estatu $cat_estatus) {
-        $this->modelo = $cat_estatus;
+    public function __construct(Cat_estatu $modelo) {
+        $this->modelo = $modelo;
     }
 
     //validaciones de formulario
@@ -39,88 +39,82 @@ class CatEstatusController extends Controller
             'submenu_active' => self::r_index,
             'breadcrumb'  => [
                 'Administrar' => route('admin.index'), 
-                'Estatus' => route(self::r_index),
-            ],
-            'rows'        => $rows
+                ucwords(self::t_) => self::r_index,
+        ],
+            'rows'        => $rows,
         ];
-
-
         return view(self::vista,$data);
     }
 
     //Formulario para editar/crear un registro
     public function create(){
-        //return $row;
         if(!isset($row)){
-            $row=new cat_estatu;
+            $row=$this->modelo;
         }
         $data = [
-            'menu_active' => 'Administrar',
+            'menu_active' => self::mm_,
             'submenu_active' => self::r_index,
             'breadcrumb'  => [
                 'Administrar' => route('admin.index'), 
-                'Catálogo-Estatus' => route(self::r_index),
+                ucwords(self::t_) => route(self::r_index),
                 'Crear' => route(self::r_create),
             ],
             'row' =>$row,
-            'nuevo'    => self::t_nuevo,
+            'nuevo'    =>strtoupper(self::t_),
         ];
-        //return $data;
         return view(self::vista,$data);
     }
     
     //Formulario para editar/crear un registro
     public function edit(cat_estatu $row){
         $data = [
-            'menu_active' => 'Administrar',
+            'menu_active' => self::mm_,
             'submenu_active' => self::r_index,
             'breadcrumb'  => [
-                'Administrar' => route('admin.index'), 
-                'Catálogo-Estatus' => route(self::r_index),
+                self::mm_ => route('admin.index'), 
+                ucwords(self::t_) => route(self::r_index),
                 'Editar' => route(self::r_index),
             ],
             'row'        => $row,
-            'update'    => self::t_update,
+            'update'    =>strtoupper(self::t_),
         ];
-        
         return view(self::vista,$data);
     }
 
-    //Eliminar fisicamente
+    //Eliminar virtualmente
     public function destroy(request $request, Cat_estatu $row) {
-        $registro = cat_estatu::findOrFail($row->id);
-        
-        if ($request->has("deleted")){
-            $registro->deleted = $request->deleted;
-            if(!empty($registro->deleted)){
-                $registro->active=0;
-            }
-            $tiempo=Carbon::now();
-            $registro->deleted_at =$tiempo;
-            $msg = ($request->deleted == 1) ? 'Registro Eliminado' : 'Registro Restaurado';
-            if($registro->save()){
-                session()->flash('msg-success' ,$msg);
-                return redirect()->route(self::r_edit,$registro);
-            }
-            else{
-                session()->flash('msg-warning' ,$msg);
-                return redirect()->route(self::r_edit,$registro)->with('message' ,"No se pudo relizar la acción - Verifique y reintente ");
-            }
+        $registro = $this->modelo::findOrFail($row->id);
+    
+    if ($request->has("deleted")){
+        $registro->deleted = $request->deleted;
+        if(!empty($registro->deleted)){
+            $registro->active=0;
         }
-        
-        return redirect()->route(self::r_index); //no debe llegar
+        $tiempo=Carbon::now();
+        $registro->deleted_at =$tiempo;
+        $msg = ($request->deleted == 1) ? 'Registro Eliminado' : 'Registro Restaurado';
+        if($registro->save()){
+            session()->flash('msg-success' ,$msg);
+            return redirect()->route(self::r_edit,$registro);
+        }
+        else{
+            session()->flash('msg-warning' ,$msg);
+            return redirect()->route(self::r_edit,$registro)->with('message' ,"No se pudo relizar la acción - Verifique y reintente ");
+        }
     }
+    return redirect()->route(self::r_index); //no debe llegar
+}
 
     //Actualizar y desactivar un registro
     public function update(request $request,Cat_estatu $row){
 
-        $registro = cat_estatu::findOrFail($row->id);
+        $registro = $this->modelo::findOrFail($row->id);
         
         if ($request->has("active")){
             $registro->active = $request->active;
             $tiempo=Carbon::now();
             $registro->activated_at =$tiempo;
-            $msg = ($request->active === 0) ? 'Registro Desactivado' : 'Registro Activado';
+            $msg = ($request->active == 0) ? 'Registro Desactivado' : 'Registro Activado';
             if($registro->save()){
                 session()->flash('msg-success' ,$msg);
                 return redirect()->route(self::r_edit,$registro);
@@ -164,7 +158,5 @@ class CatEstatusController extends Controller
         session()->flash('msg-warning' ,'Error detectados - Corrija e ntente nuevamente'); //no debe llegar
              return redirect()->back()->withInput();    
     }
-
-    
 
 }

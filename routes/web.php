@@ -36,27 +36,6 @@ Route::get('login/google/', [App\Http\Controllers\AuthenticationController::clas
 Route::get('/callback-url', [App\Http\Controllers\AuthenticationController::class,'google_auth'])->name('auth.google');
 
  
-Route::get('/auth/callback', function () {
-    $user = Socialite::driver('google')->user();
-    // $user->token
-});
-
-Route::get('/auth/callback', function () {
-    $githubUser = Socialite::driver('github')->user();
- 
-    $user = User::updateOrCreate([
-        'github_id' => $githubUser->id,
-    ], [
-        'name' => $githubUser->name,
-        'email' => $githubUser->email,
-        'github_token' => $githubUser->token,
-        'github_refresh_token' => $githubUser->refreshToken,
-    ]);
- 
-    Auth::login($user);
- 
-    return redirect('/dashboard');
-});
 //Account
 
 /*//General
@@ -133,7 +112,13 @@ Route::get('/auth/callback', function () {
     //Municipios
 
     // Grupos de captura
-        Route::get('Cat/grupos_captura', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'index'])->middleware('auth')->name('admin.grupos_captura');
+        Route::get('Cat/grupos_captura', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'index'])->middleware('auth')->name('admin.grupos_capturas.index');
+        Route::get('Cat/grupos_captura/update/{row}', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'edit'])->middleware('auth')->can('spme.admin.grupos_capturas.update')->name('admin.grupos_capturas.edit');
+        Route::put('Cat/grupos_captura/update/{row}', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'update'])->middleware('auth')->can('spme.admin.grupos_capturas.update')->name('admin.grupos_capturas.update');
+        Route::post('Cat/grupos_captura/create/', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'create'])->middleware('auth')->can('spme.admin.grupos_capturas.create')->name('admin.grupos_capturas.create');
+        Route::delete('Cat/grupos_captura/delete/{row}', [App\Http\Controllers\Cat\Cat\CatGruposCapturasController::class, 'destroy'])->middleware('auth')->can('spme.admin.grupos_capturas.delete')->name('admin.grupos_capturas.delete'); // por configurar
+
+        Route::get('Cat/grupos_claves', [App\Http\Controllers\Cat\CarGruposClavesController::class, 'index'])->middleware('auth')->name('admin.grupos_claves.index');
     // Grupos de captura
 
      // Programas Presupuestales
@@ -144,18 +129,32 @@ Route::get('/auth/callback', function () {
 
 //Configuracion
     // usuarios
-        Route::get('usuarios', [App\Http\Controllers\UsersController::class, 'index'])->middleware('auth')->name('admin.users.index');
-        Route::get('usuarios/{row}', [App\Http\Controllers\UsersController::class, 'edit'])->middleware('auth')->can('spme.admin.user.update')->name('admin.users.edit');
-        Route::put('usuarios/{row}', [App\Http\Controllers\UsersController::class, 'update'])->middleware('auth')->name('admin.users.update');
-        Route::get('profile', [App\Http\Controllers\UsersController::class, 'profile'])->middleware('auth')->name('admin.users.profile');
+        Route::get('adm/usuarios', [App\Http\Controllers\UsersController::class, 'index'])->middleware('auth')->can('spme.admin.users.index')->name('admin.users.index');
+        Route::get('adm/usuarios/update/{row}', [App\Http\Controllers\UsersController::class, 'edit'])->middleware('auth')->can('spme.admin.users.update')->name('admin.users.edit');
+        Route::put('adm/usuarios/update/{user}', [App\Http\Controllers\UsersController::class, 'update'])->middleware('auth')->name('admin.users.update'); 
+        Route::put('adm/usuarios/create/', [App\Http\Controllers\UsersController::class, 'create'])->middleware('auth')->can('spme.admin.users.create')->name('admin.users.create'); // por configurar
+        Route::delete('adm/usuarios/delete/{row}', [App\Http\Controllers\Cat\RolesController::class, 'destroy'])->middleware('auth')->can('spme.admin.users.delete')->name('admin.users.delete'); // por configurar
+        Route::get('adm/profile', [App\Http\Controllers\UsersController::class, 'profile'])->middleware('auth')->name('admin.users.profile');
+        
      // usuarios
      
      //Roles
-        Route::get('roles', [App\Http\Controllers\Cat\RolesController::class, 'index'])->middleware('auth')->name('admin.roles.index'); 
-        Route::get('roles/{}', [App\Http\Controllers\Cat\RolesController::class, 'edit'])->middleware('auth')->name('admin.roles.edit');
-        Route::put('roles/{}', [App\Http\Controllers\Cat\RolesController::class, 'update'])->middleware('auth')->name('admin.roles.update');
-        Route::delete('roles/{}', [App\Http\Controllers\Cat\RolesController::class, 'destroy'])->middleware('auth')->name('admin.roles.delete');
+        Route::get('Cat/roles', [App\Http\Controllers\Cat\RolesController::class, 'index'])->middleware('auth')->name('admin.roles.index'); 
+        Route::get('Cat/roles/update/{row}', [App\Http\Controllers\Cat\RolesController::class, 'edit'])->middleware('auth')->name('admin.roles.edit');
+        Route::put('Cat/roles/update/{row}', [App\Http\Controllers\Cat\RolesController::class, 'update'])->middleware('auth')->name('admin.roles.update');
+        Route::get('Cat/roles/create/', [App\Http\Controllers\Cat\RolesController::class, 'create'])->middleware('auth')->name('admin.roles.create');
+        Route::post('Cat/roles/create/', [App\Http\Controllers\Cat\RolesController::class, 'store'])->middleware('auth')->name('admin.roles.store');
+        Route::delete('Cat/roles/delete/{row}', [App\Http\Controllers\Cat\RolesController::class, 'destroy'])->middleware('auth')->name('admin.roles.delete');
      //Roles
+
+     //permisos
+        Route::get('Cat/permisos', [App\Http\Controllers\Cat\PermissionsController::class, 'index'])->middleware('auth')->name('admin.permisos.index'); 
+        Route::get('Cat/permisos/update/{row}', [App\Http\Controllers\Cat\PermissionsController::class, 'edit'])->middleware('auth')->name('admin.permisos.edit');
+        Route::put('Cat/permisos/update/{row}', [App\Http\Controllers\Cat\PermissionsController::class, 'update'])->middleware('auth')->name('admin.permisos.update');
+        Route::get('Cat/permisos/create/', [App\Http\Controllers\Cat\PermissionsController::class, 'create'])->middleware('auth')->name('admin.permisos.create');
+        Route::post('Cat/permisos/create/', [App\Http\Controllers\Cat\PermissionsController::class, 'store'])->middleware('auth')->name('admin.permisos.store');
+        Route::delete('Cat/permisos/delete/{row}', [App\Http\Controllers\Cat\PermissionsController::class, 'destroy'])->middleware('auth')->name('admin.permisos.delete');
+     //permisos
      
     // bitacora
         Route::get('bitacora', [App\Http\Controllers\UsersController::class, 'index'])->middleware('auth')->name('admin.bitacora'); //por configurar

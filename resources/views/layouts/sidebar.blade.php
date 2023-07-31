@@ -20,14 +20,15 @@ if (!isset($submenu_active)){
             'admin.municipios'              => 'Municipios',
         ],
         'configuraciones'=> [
+            'admin.permisos.index'        => 'Permisos',
             'admin.roles.index'        => 'Roles',
             'admin.users.index'        => 'Usuarios',
             'admin.bitacora'           => 'Bitacora',
             'admin.plantillas_correos' => 'Plantillas Correos',
         ],
         'grupos_captura'=> [
-            'admin.gc_claves'      =>   'Grupos Claves',
-            'admin.grupos_captura' => 'Grupos Caprtura',
+            'admin.grupos_claves.index'      =>   'Grupos Claves',
+            'admin.grupos_capturas.index' => 'Grupos de Capturas',
         ],
         'catalogos_pat'=> [
             'admin.programas_institucionales' => 'Prog. Institucionales',
@@ -51,12 +52,13 @@ if (!isset($submenu_active)){
         'calendario'=> [
             'admin.calendario'            => 'Calendario',
         ],
-        'cuenta'=> [
-            'admin.users.profile'            => 'Profile',
+        'bandeja'=> [
+            'admin.users.profile'            => 'Avisos',
         ],
         'mon_asm'=> [
-            'asm_fichas'            => 'Ficha Mon. y Eva.',
-            'asm_recomendaciones'   => 'Recomendaciones'
+            'asm.fichas.index'            => 'Fichas de Mon. y Eva.',
+            'asm.recomendaciones.index'   => 'Recomendaciones',
+            'asm.criterios.index'         => 'Criterios',
         ],
     ];
 
@@ -140,7 +142,8 @@ if (!isset($submenu_active)){
                             </li>
                         @endforeach
                     </ul>
-
+                    
+                    @can('spme.admin.grupos_capturas.index')
                     <ul class="collapse submenu list-unstyled" id="menu-administrar" data-bs-parent="#accordionSidebar">
                         <li class="menu menu-heading">
                             <div class="heading">
@@ -150,10 +153,12 @@ if (!isset($submenu_active)){
                         
                         @foreach ($_side_menu_tree['grupos_captura'] as $menu => $nombre) 
                             <li class="{{(isset($submenu_active)&&$submenu_active==$menu) ? 'active' : '' }}">
-                                <a href="#">{{$nombre}}</a>
+                                <a href="{{route($menu)}}">{{$nombre}}</a>
                             </li>
                         @endforeach
                     </ul>
+                    @endcan
+
                     @can('pat.admin.home')
                     <ul class="collapse submenu list-unstyled" id="menu-administrar" data-bs-parent="#accordionSidebar">
                         <li class="menu menu-heading">
@@ -314,19 +319,20 @@ if (!isset($submenu_active)){
       
 
 
-            {{-- Menu Cuenta --}}
-            <li class="menu {{ (array_key_exists($submenu_active,$_side_menu_tree['cuenta'])) ? 'active' : '' }}">
+            {{-- Bandeja --}}
+            <li class="menu {{ (array_key_exists($submenu_active,$_side_menu_tree['bandeja'])) ? 'active' : '' }}">
                 <a href="#menu-cuenta" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        <span>Cuenta</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+                        {{-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> --}}
+                        <span>Bandeja</span>
                     </div>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="menu-cuenta" data-bs-parent="#accordionSidebar">
-                    @foreach ($_side_menu_tree['cuenta'] as $menu => $nombre) 
+                    @foreach ($_side_menu_tree['bandeja'] as $menu => $nombre) 
                         <li class="{{(isset($submenu_active)&&$submenu_active==$menu) ? 'active' : '' }}">
                             <a href="{{route($menu)}}">{{$nombre}}</a>
                         </li>

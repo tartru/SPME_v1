@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class asmRecomendacione extends Model
 {
-    use HasFactory;
+    public function ficha()
+    {
+        return $this->belongsTo('App\Models\Asm\asmFicha');
+    }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Livewire\Monitoreo\Asm\FichasASM;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,11 +27,18 @@ use Illuminate\Support\Facades\Auth;
 //ASM
 
     //Asm-listado
-    Route::get('asm/fichas', [App\Http\Controllers\asm\AsmFichaController::class, 'index'])->middleware('auth')->name('asm_fichas');
+    Route::get('asm/fichas', [App\Http\Controllers\asm\AsmRecomendacionesController::class, 'fichas'])->middleware('auth')->name('asm.fichas.index');
+
     //Asm-listado
 
     //Asm-recomendaciones
-    Route::get('asm/recomendaciones', [App\Http\Controllers\asm\AsmRecomendacionesController::class, 'index'])->middleware('auth')->name('asm_recomendaciones');
+    Route::get('asm/recomendaciones', [App\Http\Controllers\asm\AsmRecomendacionesController::class, 'recomendaciones'])->middleware('auth')->name('asm.recomendaciones.index');
+    //Asm-recomendaciones
+
+    //Asm-recomendaciones
+    Route::get('asm/criterios', [App\Http\Controllers\asm\AsmRecomendacionesController::class, 'criterios'])->middleware('auth')->name('asm.criterios.index');
+    Route::put('asm/criterios', function() {
+    })->middleware('auth')->name('asm.criterios.update');
     //Asm-recomendaciones
 
 //ASM

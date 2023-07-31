@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('comentario_especifico')->nullable();
             $table->foreignId('cat_programas_presupuestale_id')->constrained();
             $table->foreignId('cat_dependencia_id')->constrained();
-            $table->foreignId('cat_estatu_id')->constrained();
+            $table->foreignId('cat_estatu_id')->constrained()->default(1);
             $table->tinyInteger('deleted')->default(0);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable()->default(null);

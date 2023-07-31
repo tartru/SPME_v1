@@ -5,11 +5,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Cat\Cat_grupos_captura;
+use App\Models\User;
 
 class Cat_entidades_federativa extends Model {
+
+    public $timestamps = true;
+    protected $guarded = ['deleted'];
     
     public function Obtener() {
         return Cat_entidades_federativa::all();
+    }
+
+    public function getAllActives () {
+        return $this->where('deleted',0)->get();
+    }
+
+    //regresa registros activos id, nombre y siglas (array simple) 
+    public function getBasicToSelect (){
+        $arows=null;
+        $rows=null;
+        $arows=$this->orderBy('nombre', 'ASC')->select(['id','nombre'])->where('deleted',0)->get();
+        if($arows->count()){
+            foreach($arows as $_hr => $_vr){
+                $rows[$_vr['id']] = $_vr['nombre'];
+            }
+        }
+        return $rows;
     }
 
     public function ObteneEntidadesFederativaPorId($id) {
@@ -29,13 +51,27 @@ class Cat_entidades_federativa extends Model {
         return $tabla;
     }
 
+
     public function cat_regione() {
         return $this->belongsTo(Cat_regione::class); // Fkey = nombre de metodo + id Pkey=> regresa * entidadesfederativas con objeto region que le pertenece;
     }
 
+    
     public function cat_municipios(){
         return $this->hasMany(cat_municipio::class); //regresa * estados con objetos de sus municipios correspondientes
-    }   
-      
+    } 
+
+
+    //relacion (Many-to-Many) polimorfica con Grupos captura
+    public function cat_grupos_capturas () {
+        return $this->morphToMany(Cat_grupos_captura::class,'cat_grupable');
+    }
+
+    
+    //Relacion polimorfica (Many-to-Many) Inversa con usuarios
+    public function users () {
+        return $this->morphedByMany(User::class,'cat_entidable');
+    }
+     
 
 }

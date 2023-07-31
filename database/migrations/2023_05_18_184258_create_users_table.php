@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('puesto')->nullable()->default(null);
             $table->string('area')->nullable()->default(null);
             $table->string('last_ip',25)->nullable()->default(null);
-            $table->timestamp('last_login_attempt')->nullable()->default(null);
+            $table->timestamp('last_login')->nullable()->default(null);
             $table->tinyInteger('login_attempts')->nullable()->default(0);
             $table->string('ban_reason')->nullable()->default(0);
             $table->tinyInteger('bloqued')->nullable()->default(0);

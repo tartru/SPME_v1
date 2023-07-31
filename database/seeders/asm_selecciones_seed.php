@@ -15,11 +15,15 @@ class asm_selecciones_seed extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0;'); 
-        DB::table('asm_selecciones')->insert(['nombre' => 'Clara','descripcion' => '','created_at' => now()]);
-        DB::table('asm_selecciones')->insert(['nombre' => 'Justificable','descripcion' => '','created_at' => now()]);
-        DB::table('asm_selecciones')->insert(['nombre' => 'Relevante','descripcion' => '','created_at' => now()]);
-        DB::table('asm_selecciones')->insert(['nombre' => 'Factible','descripcion' => '','created_at' => now()]);
+        $table = 'asm_selecciones';
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table($table)->truncate();
+        DB::statement("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
+  
+        DB::table($table)->insert(['nombre' => 'Clara','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Justificable','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Relevante','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Factible','descripcion' => '','created_at' => now()]);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }

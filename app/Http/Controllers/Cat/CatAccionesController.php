@@ -14,13 +14,12 @@ class CatAccionesController extends Controller
     const r_create = 'admin.acciones.create';
     const r_edit =  'admin.acciones.edit';
     const r_update = 'admin.acciones.update';
-    const vista = 'cat.AccionesList';
-    const t_nuevo = 'AGREGAR REGISTRO A CATALOGO DE ACCIONES'; 
-    const t_update ='EDITAR CATALOGO DE ACCIONES'; 
+    const vista = 'cat.AccionesList'; //return view('cat.AccionesList')
+    const t_ = 'ACCIONES';
+    const mm_ = 'Administrar';
     
-    
-    public function __construct(Cat_accione $cat_acciones) {
-        $this->modelo = $cat_acciones;
+    public function __construct(Cat_accione $modelo) {
+        $this->modelo = $modelo;
     }
 
     //validaciones de formulario
@@ -40,12 +39,10 @@ class CatAccionesController extends Controller
             'submenu_active' => self::r_index,
             'breadcrumb'  => [
                 'Administrar' => route('admin.index'), 
-                'Acciones' => self::r_index,
+                ucwords(self::t_) => self::r_index,
         ],
             'rows'        => $rows,
         ];
-
-
         return view(self::vista,$data);
     }
 
@@ -55,41 +52,57 @@ class CatAccionesController extends Controller
             $row=$this->modelo;
         }
         $data = [
-            'menu_active' => 'Administrar',
+            'menu_active' => self::mm_,
             'submenu_active' => self::r_index,
             'breadcrumb'  => [
                 'Administrar' => route('admin.index'), 
-                'Catálogo-Acciones' => route(self::r_index),
+                ucwords(self::t_) => route(self::r_index),
                 'Crear' => route(self::r_create),
             ],
             'row' =>$row,
-            'nuevo'    =>self::t_nuevo,
+            'nuevo'    =>strtoupper(self::t_),
         ];
-        //return $data;
         return view(self::vista,$data);
     }
     
     //Formulario para editar/crear un registro
     public function edit(Cat_accione $row){
         $data = [
-            'menu_active' => 'Administrar',
+            'menu_active' => self::mm_,
             'submenu_active' => self::r_index,
             'breadcrumb'  => [
-                'Administrar' => route('admin.index'), 
-                'Catálogo-Acciones' => route(self::r_index),
+                self::mm_ => route('admin.index'), 
+                ucwords(self::t_) => route(self::r_index),
                 'Editar' => route(self::r_index),
             ],
             'row'        => $row,
-            'update'    =>self::t_update,
+            'update'    =>strtoupper(self::t_),
         ];
-        
         return view(self::vista,$data);
     }
 
-    //Eliminar fisicamente
-    public function destroy(Cat_accione $row) {
-        $row->delete();
-        return redirect()->route(self::r_index);
+   //Eliminar virtualmente
+   public function destroy(request $request, Cat_accione $row) {
+    $registro = $this->modelo::findOrFail($row->id);
+    
+        if ($request->has("deleted")){
+            $registro->deleted = $request->deleted;
+            if(!empty($registro->deleted)){
+                $registro->active=0;
+            }
+            $tiempo=Carbon::now();
+            $registro->deleted_at =$tiempo;
+            $msg = ($request->deleted == 1) ? 'Registro Eliminado' : 'Registro Restaurado';
+            if($registro->save()){
+                session()->flash('msg-success' ,$msg);
+                return redirect()->route(self::r_edit,$registro);
+            }
+            else{
+                session()->flash('msg-warning' ,$msg);
+                return redirect()->route(self::r_edit,$registro)->with('message' ,"No se pudo relizar la acción - Verifique y reintente ");
+            }
+        }
+    return redirect()->route(self::r_index); //no debe llegar
     }
 
     //Actualizar y desactivar un registro
@@ -101,7 +114,7 @@ class CatAccionesController extends Controller
             $registro->active = $request->active;
             $tiempo=Carbon::now();
             $registro->activated_at =$tiempo;
-            $msg = ($request->active === 0) ? 'Registro Desactivado' : 'Registro Activado';
+            $msg = ($request->active == 0) ? 'Registro Desactivado' : 'Registro Activado';
             if($registro->save()){
                 session()->flash('msg-success' ,$msg);
                 return redirect()->route(self::r_edit,$registro);
@@ -142,7 +155,7 @@ class CatAccionesController extends Controller
                 return redirect()->back()->withInput();
             }
         }
-        session()->flash('msg-warning' ,'Error detectados - Corrija e ntente nuevamente'); //no debe llegar
+        session()->flash('msg-warning' ,'Error detectados - Corrija e Intente nuevamente'); //no debe llegar
              return redirect()->back()->withInput();    
     }
 

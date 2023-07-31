@@ -15,16 +15,20 @@ class asm_temas_seed extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0;'); 
-        DB::table('asm_temas')->insert(['nombre' => 'Diseño','descripcion' => '','created_at' => now()]);
-        DB::table('asm_temas')->insert(['nombre' => 'Operación','descripcion' => '','created_at' => now()]);
-        DB::table('asm_temas')->insert(['nombre' => 'Resultados','descripcion' => '','created_at' => now()]);
-        DB::table('asm_temas')->insert(['nombre' => 'Productos','descripcion' => '','created_at' => now()]);
-        DB::table('asm_temas')->insert(['nombre' => 'Indicadores','descripcion' => '','created_at' => now()]);
-        DB::table('asm_temas')->insert(['nombre' => 'Cobertura','descripcion' => '','created_at' => now()]);
-        DB::table('asm_temas')->insert(['nombre' => 'Planeación','descripcion' => '','created_at' => now()]);
-        DB::table('asm_temas')->insert(['nombre' => 'Ejecución','descripcion' => '','created_at' => now()]);
-        DB::table('asm_temas')->insert(['nombre' => 'Otros','descripcion' => '','created_at' => now()]);
+        $table = 'asm_temas';
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table($table)->truncate();
+        DB::statement("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
+   
+        DB::table($table)->insert(['nombre' => 'Diseño','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Operación','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Resultados','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Productos','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Indicadores','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Cobertura','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Planeación','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Ejecución','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Otros','descripcion' => '','created_at' => now()]);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;'); 
     }
 }

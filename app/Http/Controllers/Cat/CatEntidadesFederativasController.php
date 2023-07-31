@@ -17,9 +17,6 @@ class CatEntidadesFederativasController extends Controller
     }
 
     public function index(){
-        //$cat_entidades_federativas = $this->cat_entidades_federativas->Obtener();
-        //return view('Cat/EntidadesList',$data);
-        //return $cat_entidades_federativas; ->select(['id','nombre'])
         $rows = Cat_entidades_federativa::select(['nombre'])->get();
         return $rows;
     }
@@ -42,7 +39,7 @@ class CatEntidadesFederativasController extends Controller
                 
         //return ($data);
         //return view('Pat.index',compact('data')); //como objeto
-        return view('Cat/EntidadesList',$data);
+        return view('Cat.EntidadesList',$data);
     }
 
     public function prueba() {

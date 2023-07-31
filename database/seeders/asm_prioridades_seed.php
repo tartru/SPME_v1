@@ -15,10 +15,14 @@ class asm_prioridades_seed extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0;'); 
-        DB::table('asm_prioridades')->insert(['nombre' => 'Alta','descripcion' => '','created_at' => now()]);
-        DB::table('asm_prioridades')->insert(['nombre' => 'Media','descripcion' => '','created_at' => now()]);
-        DB::table('asm_prioridades')->insert(['nombre' => 'Baja','descripcion' => '','created_at' => now()]);
+        $table = 'asm_prioridades';
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table($table)->truncate();
+        DB::statement("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
+  
+        DB::table($table)->insert(['nombre' => 'Alta','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Media','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Baja','descripcion' => '','created_at' => now()]);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }

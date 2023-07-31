@@ -14,13 +14,17 @@ class cat_regiones_seed extends Seeder
      * @return void
      */
     public function run() {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0;'); 
-        DB::table('cat_regiones')->insert(['nombre' => 'Centro']);
-        DB::table('cat_regiones')->insert(['nombre' => 'Noreste']);
-        DB::table('cat_regiones')->insert(['nombre' => 'Noroeste']);
-        DB::table('cat_regiones')->insert(['nombre' => 'Norte']);
-        DB::table('cat_regiones')->insert(['nombre' => 'Occidente']);
-        DB::table('cat_regiones')->insert(['nombre' => 'Sureste']);
+        $table = 'cat_regiones';
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table($table)->truncate();
+        DB::statement("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
+
+        DB::table($table)->insert(['nombre' => 'Centro']);
+        DB::table($table)->insert(['nombre' => 'Noreste']);
+        DB::table($table)->insert(['nombre' => 'Noroeste']);
+        DB::table($table)->insert(['nombre' => 'Norte']);
+        DB::table($table)->insert(['nombre' => 'Occidente']);
+        DB::table($table)->insert(['nombre' => 'Sureste']);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;'); 
     }
 

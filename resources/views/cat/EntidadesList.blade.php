@@ -20,17 +20,14 @@
         <!-- Variables -->                
         @php
         $regiones_options = [];
-        foreach ($catalogos['regiones'] as $value) 
-        {
-            //echo gettype($value), "-";
-            //echo ($value->nombre), "</br>";
+        foreach ($catalogos['regiones'] as $value) {
             $regiones_options[$value->nombre] = $value->nombre;
         }
-        //var_dump($regiones_options); //ver contenido del array
-        //echo "</br>",$regiones_options[1]; //ver si asigno el indice la llave id
         @endphp
 
-        @include('layouts.tableA', ['table_data' => $rows, 'table_config' => [
+        @include('layouts.tableA', [
+            'table_data' => $rows, 
+            'table_config' => [
             'headers'  => [
                 'CVE_ENTIDAD'     => 'CVE_ENTIDAD',
                 'nombre'          => 'Entidad',

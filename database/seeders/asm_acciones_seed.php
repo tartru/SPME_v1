@@ -15,12 +15,16 @@ class asm_acciones_seed extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0;'); 
-        DB::table('asm_acciones')->insert(['nombre' => 'Corrige','descripcion' => '','created_at' => now()]);
-        DB::table('asm_acciones')->insert(['nombre' => 'Modifica','descripcion' => '','created_at' => now()]);
-        DB::table('asm_acciones')->insert(['nombre' => 'Adiciona','descripcion' => '','created_at' => now()]);
-        DB::table('asm_acciones')->insert(['nombre' => 'Reorienta','descripcion' => '','created_at' => now()]);
-        DB::table('asm_acciones')->insert(['nombre' => 'Suspende parcial o totalmente','descripcion' => '','created_at' => now()]);
+        $table = 'asm_acciones';
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table($table)->truncate();
+        DB::statement("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
+
+        DB::table($table)->insert(['nombre' => 'Corrige','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Modifica','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Adiciona','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Reorienta','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Suspende parcial o totalmente','descripcion' => '','created_at' => now()]);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;'); 
     }
 }

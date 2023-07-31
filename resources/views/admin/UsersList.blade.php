@@ -16,21 +16,23 @@
 
 
 @section('content')
-    <div class="widget-content widget-content-area br-8">
-        <!-- Variables -->
-        @php 
-            $permisos=[]; 
-        @endphp               
-        @can('spme.admin.user.update')
-             @php $permisos['update']='admin.users.update';@endphp   
-        @endcan
-        @can('spme.admin.user.delete')
-             @php $permisos['delete']='admin.users.index'; @endphp 
-        @endcan
-        @can('spme.admin.user.create')
-             @php $permisos['create']='admin.users.index'; @endphp 
-        @endcan
-        
+
+<div class="widget-content br-8">
+    <!-- Variables -->
+    @php 
+    $permisos=[];
+    $atras= (array_slice($breadcrumb, -2, 1));
+    //var_dump($atras);
+    @endphp               
+    @can('spme.admin.users.update')
+        @php $permisos['update']='admin.users.update';@endphp   
+    @endcan
+    @can('spme.admin.users.delete')
+        @php $permisos['delete']='admin.users.delete'; @endphp 
+    @endcan
+    @can('spme.admin.users.create')
+        @php $permisos['create']='admin.users.create'; @endphp 
+    @endcan
         @include('layouts.tableA', ['table_data' => $rows, 'table_config' => [
             'headers' => [
                 'id'     => 'id',
@@ -48,7 +50,7 @@
             'actions'  => [
                 'pagination' => [
                     'options' => [10,30,50,100],
-                    'rows'    => 15
+                    'rows'    => 10
                 ],
                 'ordering'         => true,
                 'searching'        => true,

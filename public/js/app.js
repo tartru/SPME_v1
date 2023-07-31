@@ -171,17 +171,17 @@ function initializeDataTable(table_config) {
     //Agrega los filtros de rangos
 
     //Botones de exportar datos
-        var _onTopLeft = "<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l>";
+        var _onTopLeft = "<'col-11 col-sm-6 d-flex justify-content-sm-start justify-content-center 'l>";
         var _secondRow = "";
 
         if ( typeof table_config['actions'] != "undefined" && typeof table_config['actions']['export_data'] != "undefined" && table_config['actions']['export_data'] ) {
             var _buttons = {
                 "buttons": [
-                    { extend: 'copy', className: 'btn' },
-                    { extend: 'csv', className: 'btn' },
-                    { extend: 'excel', className: 'btn' },
-                    { extend: 'pdf', className: 'btn' },
-                    { extend: 'print', className: 'btn' }
+                    { extend: 'copy', className: 'btn btn-sm' },
+                    { extend: 'csv', className: 'btn btn-sm' },
+                    { extend: 'excel', className: 'btn btn-sm' },
+                    { extend: 'pdf', className: 'btn btn-sm' },
+                    { extend: 'print', className: 'btn btn-sm' }
                 ]
             };
 
@@ -228,11 +228,21 @@ function initializeDataTable(table_config) {
         }
 
         for ( let _columnName in table_config['headers'] ) {
-            _columnDefs.push({
-                "targets": [_columnPos],
-                "name"   : _columnName,
-                "data"   : _columnName,
-            });
+            if( typeof _columnPos == 0) {
+                _columnDefs.push({
+                "targets"   : [_columnPos],
+                "name"      : _columnName,
+                "searchable": true,
+                "orderable" : false,
+                });
+            }
+            else {
+                _columnDefs.push({
+                    "targets": [_columnPos],
+                    "name"   : _columnName,
+                    "data"   : _columnName,
+                });
+            }
             _columnPos++;
         }
     //Definición de columnas
@@ -270,6 +280,7 @@ function initializeDataTable(table_config) {
 
             //Ordenamiento
             "ordering": (typeof table_config['actions'] != "undefined" && typeof table_config['actions']['ordering'] != "undefined" && table_config['actions']['ordering'] == false) ? false : true,
+            "order": (typeof table_config['actions'] != "undefined" && typeof table_config['actions']['order'] != "undefined") ?  table_config['actions']['order'] : [[0, 'asc']],
             //Ordenamiento
 
             //Búsqueda

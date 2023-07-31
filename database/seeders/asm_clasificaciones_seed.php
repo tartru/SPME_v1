@@ -15,11 +15,15 @@ class asm_clasificaciones_seed extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0;'); 
-        DB::table('asm_clasificaciones')->insert(['nombre' => 'Específico','descripcion' => '','created_at' => now()]);
-        DB::table('asm_clasificaciones')->insert(['nombre' => 'Institucional','descripcion' => '','created_at' => now()]);
-        DB::table('asm_clasificaciones')->insert(['nombre' => 'Interinstitucional','descripcion' => '','created_at' => now()]);
-        DB::table('asm_clasificaciones')->insert(['nombre' => 'Intergubernamental','descripcion' => '','created_at' => now()]);
+        $table = 'asm_clasificaciones';
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table($table)->truncate();
+        DB::statement("ALTER TABLE ".$table." AUTO_INCREMENT = 1");
+ 
+        DB::table($table)->insert(['nombre' => 'Específico','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Institucional','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Interinstitucional','descripcion' => '','created_at' => now()]);
+        DB::table($table)->insert(['nombre' => 'Intergubernamental','descripcion' => '','created_at' => now()]);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }

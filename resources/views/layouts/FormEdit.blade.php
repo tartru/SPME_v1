@@ -8,7 +8,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
     <div class="statbox widget box box-shadow">
         <div class="widget-header">                                
             <div class="row">
-                <div class="col mb-xl-0 mb-2"><h4>{{isset($update) ? $update : $nuevo }} / ({{($row['id']) ? $row['id'] : 'Nuevo' }})</h4></div>
+                <div class="col mb-xl-0 mb-2"><h4>{{isset($update) ? 'ACTUALIZAR '.$update : 'CREAR '.$nuevo }} / ({{($row['id']) ? $row['id'] : 'Nuevo' }})</h4></div>
                 <div class="col-1 mb-xl-0 mb-2">
                     @if(isset($update) && array_key_exists('active',$headers)&&$row['deleted']!=1)
                         {{ html()->modelForm($row, 'PUT',route($permissions['update'],$row))->open() }}
@@ -25,7 +25,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                 </div>
 
                 <div class="col-1 mb-xl-0 mb-2 mx-3">
-                @if(!empty($update)&&!empty($permissions['delete'])&&$row['deleted']!=1)
+                @if(!empty($update)&&!empty($permissions['delete'])&&empty($row['deleted']))
                     {{ html()->modelForm($row,'delete',route($permissions['delete'],$row['id']))->id('delete')->open() }}
                         <input type="hidden" name="deleted" value="1">
                         <h4><button type="submit" form="delete" class="btn btn-danger">Eliminar</button></h4>
@@ -51,24 +51,27 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
         
         <div class="widget-content widget-content-area p-3">
             <div class="row m-2">
-                {{-- dump ($row); --}}
                 @foreach ($headers as $_h_key => $_h_val)
-                    {{-- @php dump ($_h_key); @endphp --}}
+                {{-- VARIABLES --}}
                         @php
+                            $tam=1;
                             // type = [0]=tipo de campo| [1]=tamaño | [2]=requerido | [3]=valor default | [4]=editable
                             $conf = explode("-", $_h_val['type']);
                             $lar=ceil($conf[1]/6);
                             $req = ($conf[2]=="si") ? true : false;
-                            $dis = (($_h_key=='id')||($conf[0]=='timestamp'||($_h_key=='active')||($_h_key=='deleted'))) ? true : false;
-                            if((array_key_exists('active',$headers)&&(!is_null($row['active'])&&($row['active']==0)))){
+                            $dis = ($conf[4]=='no') ? true : false;
+                            if(empty($row['active'])&&isset($row['active'])||!empty($row['deleted'])&&isset($row['deleted'])){
                                 $dis = true;
                             }
-                            if(($row['deleted'])==1){
-                                $dis = true;
+                            if($conf[1]<=10){
+                                $tam=$conf[1];
+                            }else {
+                                $tam=7;
                             }
+                                
                         @endphp
                         @if($conf[0] == 'int')
-                            <div class="col-xl-2 mb-xl-0 mb-2">
+                            <div class="col-xl-{{$tam}} mb-xl-0 mb-2">
                                 <span class='text-dark'>@if(($req)&&(!$dis)) * @endif {{$_h_val['txt']}}:</span><br>
                                 <div class="input-group mb-3">
                                     {{ html()->number($_h_key)->class('form-control')->placeholder(!is_null($row[$_h_key]) ? $row[$_h_key] : '#')->attribute('title','Max: '.$conf[1])->required($req)->disabled($dis) }}
@@ -81,7 +84,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                             </div>
                         @endif
                         @if($conf[0] == 'tint')
-                            <div class="col-xl-2 mb-xl-0 mb-2">
+                            <div class="col-xl-{{$tam}} mb-xl-0 mb-2">
                                 <span class='text-dark'>@if(($req)&&(!$dis)) * @endif {{$_h_val['txt']}}:</span><br>
                                 <div class="input-group mb-3">
                                     {{ html()->number($_h_key)->class('form-control')->placeholder(!is_null($row[$_h_key]) ? $row[$_h_key] : '#')->attribute('title','Max: '.$conf[1])->required($req)->disabled($dis) }}
@@ -95,7 +98,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                         @endif
 
                         @if($conf[0] == 'varchar')
-                            <div class="col-xl-6 mb-xl-0 mb-2">
+                            <div class="col-xl-{{$tam}} mb-xl-0 mb-2">
                                 <span class='text-dark'>@if(($req)&&(!$dis)) * @endif {{$_h_val['txt']}}:</span><br>
                                 <div class="input-group mb-3">
                                     {{ html()->text($_h_key)->class('form-control')->placeholder(!is_null($row[$_h_key]) ? $row[$_h_key] : '-')->attribute('title','Max: '.$conf[1])->required($req)->disabled($dis) }}
@@ -109,7 +112,7 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                         @endif
 
                         @if($conf[0] == 'timestamp')
-                            <div class="col-xl-3 mb-xl-0 mb-2">
+                            <div class="col-xl-{{$tam}} mb-xl-0 mb-2">
                                 <span class='text-dark'>@if(($req)&&(!$dis)) * @endif {{$_h_val['txt']}}:</span><br>
                                 <div class="input-group mb-3">
                                     {{ html()->text($_h_key)->class('form-control')->placeholder(!is_null($row[$_h_key]) ? $row[$_h_key] : 'yyyy-mm-dd hh:mm:ss')->required($req)->disabled($dis) }}
@@ -123,10 +126,10 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                         @endif
 
                         @if($conf[0] == 'select')
-                            <div class="col-xl-3 mb-xl-0 mb-2">
+                            <div class="col-xl-{{$tam}} mb-xl-0 mb-2">
                                 <span class='text-dark'>@if(($req)&&(!$dis)) * @endif {{$_h_val['txt']}}:</span><br>
                                 <div class="input-group mb-3">
-                                    {{ html()->select($_h_key)->class('form-control')->placeholder(!is_null($row[$_h_key]) ? $row[$_h_key] : 'yyyy-mm-dd hh:mm:ss')->required($req)->disabled($dis) }}
+                                    {{ html()->Select($_h_key)->class('form-control')->placeholder('Seleccione')->options($nivel)->required($req)->disabled($dis) }}
                                 </div>
                                 @error($_h_key)  
                                     <div class="input-group mb-3">
@@ -145,16 +148,18 @@ $_data_table_id = (!empty($table_config) && !empty($table_config['id'])) ? $tabl
                     <div class="col-2 mb-xl-0 mb-2">
                         <div><a class="btn btn-info h4" href={{(isset($atras) ? $atras : '../')}}>Regresar</a></div>
                     </div>
-                    @if(!empty($update)&&!empty($row['active']))
-                        @if (!empty($permissions['update']))
-                            <div class="col-2 mb-xl-0 mb-2">
-                                    <button type="submit" form="update" class="btn btn-primary">Actualizar</button>
-                            </div>
+                    @if(!empty($update)&&empty($row['deleted']))
+                        @if (array_key_exists('active',$headers)&&!empty($row['active'])||!array_key_exists('active',$headers))
+                            @if (!empty($permissions['update']))
+                                <div class="col-2 mb-xl-0 mb-2">
+                                        <button type="submit" form="update" class="btn btn-primary" onclick="this.disabled=true;this.value='Enviando...';this.form.submit();">Actualizar</button>
+                                </div>
+                            @endif
                         @endif
                     @elseif(!empty($nuevo))
                         @if (!empty($permissions['create']))
                             <div class="col-2 mb-xl-0 mb-2">
-                                    <button type="submit" form="nuevo" class="btn btn-primary">Guardar</button>
+                                    <button type="submit" form="nuevo" class="btn btn-primary" onclick="this.disabled=true;this.value='Enviando...';this.form.submit();">Guardar</button>
                             </div>
                         @endif
                     @endif

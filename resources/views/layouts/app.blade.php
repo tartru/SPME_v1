@@ -12,11 +12,13 @@
         <link href="{{ asset('dx/layouts/vertical-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
         <script src="{{ asset('dx/layouts/vertical-light-menu/loader.js') }}"></script> 
 
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="{{ asset('dx/src/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 
         <link href="{{ asset('dx/src/plugins/src/font-icons/fontawesome/css/fontawesome.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('dx/src/assets/css/dark/components/font-icons.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('dx/src/assets/css/light/components/font-icons.css') }}" rel="stylesheet" type="text/css">
+        <!-- END GLOBAL MANDATORY STYLES -->
 
         <link href="{{ asset('dx/src/assets/css/light/elements/alert.css') }}" rel="stylesheet" type="text/css" />
 
@@ -27,9 +29,9 @@
         <link href="{{ asset('dx/layouts/vertical-light-menu/css/light/plugins.css') }}" rel="stylesheet" type="text/css" />
          <!-- BEGIN STYLES -->
         @stack('styles')
-  <!-- END  estilos 1 -->
+    <!-- END  estilos 1 -->
         @livewireStyles
-<!-- END  estilos 2-->
+    <!-- END  estilos 2-->
         <link href="{{ asset('dx/src/assets/css/dark/custom.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('dx/src/assets/css/light/custom.css') }}" rel="stylesheet" type="text/css" />
         <style>
@@ -112,9 +114,10 @@
 
         <script src="{{ asset('dx/src/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('dx/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+        <script src="{{ asset('dx/layouts/vertical-light-menu/app.js') }}"></script>
         <script src="{{ asset('dx/src/plugins/src/mousetrap/mousetrap.min.js') }}"></script>
         <script src="{{ asset('dx/src/plugins/src/sweetalerts2/sweetalerts2.min.js') }}"></script>
-        <script src="{{ asset('dx/layouts/vertical-light-menu/app.js') }}"></script>
+        
 
         <script src="{{ asset('js/app.js') }}"></script>
         <!-- END GLOBAL MANDATORY SCRIPTS -->
