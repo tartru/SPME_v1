@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('full_name')->nullable()->default(null);
             $table->string('puesto')->nullable()->default(null);
             $table->string('area')->nullable()->default(null);
+            $table->string('img')->nullable()->default(null);
             $table->string('last_ip',25)->nullable()->default(null);
             $table->timestamp('last_login')->nullable()->default(null);
             $table->tinyInteger('login_attempts')->nullable()->default(0);

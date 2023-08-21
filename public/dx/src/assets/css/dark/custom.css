@@ -230,6 +230,10 @@ input[type=number] {
     font-size: 120%;
 }
 
+.accordion.dataTables-filter-wrapper .card-header section > div.row svg {
+    transform:180deg;
+}
+
 body.dark .accordion.dataTables-filter-wrapper .card-header section > div:not(.collapsed) {
     color: #fff;
 }
@@ -245,4 +249,7 @@ body.dark .accordion.dataTables-filter-wrapper .card-header section > div:not(.c
     margin-bottom: 36px;
     margin-left: -1px;
     letter-spacing: 1px;
+}
+.accordion.dataTables-filter-wrapper .card-header section > div:not(.collapsed) svg {
+    transform: rotate(180deg);
 }

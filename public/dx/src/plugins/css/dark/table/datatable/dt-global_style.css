@@ -119,7 +119,7 @@ body.dark .table > thead > tr > th {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 1px;
-  white-space: nowrap;
+  white-space:normal;
 }
 body.dark .table > tbody > tr > td .dropdown:not(.custom-dropdown-icon):not(.custom-dropdown) .dropdown-menu {
   display: none !important;
@@ -144,7 +144,7 @@ body.dark .table > tbody > tr > td {
   padding: 10px 21px 10px 21px;
   color: #888ea8;
   letter-spacing: 1px;
-  white-space: nowrap;
+  white-space:normal;
 }
 body.dark .table-striped tbody tr:nth-of-type(odd) {
   background-color: transparent !important;

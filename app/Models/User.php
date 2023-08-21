@@ -10,6 +10,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Cat\Cat_grupos_captura;
+use App\Models\Cat\Cat_system;
+use App\Models\Cat\Cat_aviso;
 
 class User extends Authenticatable
 {
@@ -111,12 +113,22 @@ class User extends Authenticatable
         }
     }
 
-    //relacion (Many-to-Many)s polimorfica con Grupos Captura
-    public function cat_grupos_capturas () {
-        return $this->morphToMany(Cat_grupos_captura::class,'cat_grupable');
+    //relacion hasMany con avisos
+    public function cat_avisos(){
+        return $this->hasMany(Cat_aviso::class)->orderBy('cat_avisos.created_at','ASC'); //regresa * avisos ligados a usuario  // no probado
     }
 
-    //relacion (Many-to-Many) polimorfica con Entidades Federativas
+    //relacion ManytoMany con avisos
+    public function cat_systems(){
+        return $this->belongsToMany(Cat_system::class)->withPivot('active', 'created_at'); //regresa * systems ligados a usuario //no probado
+    }
+
+    //relacion (Many-to-Many)s polimorfica con Grupos Captura - ok
+    public function cat_grupos_capturas () {
+        return $this->morphToMany(Cat_grupos_captura::class,'cat_grupable')->orderBy('cat_grupos_capturas.nombre', 'ASC');
+    }
+
+    //relacion (Many-to-Many) polimorfica con Entidades Federativas - ok
     public function cat_entidades_federativas () {
         return $this->morphToMany(Cat_entidades_federativa::class,'cat_entidable');
     }

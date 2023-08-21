@@ -260,6 +260,7 @@ class CatGruposCapturasController extends Controller
             }
 
         }
+        
         session()->flash('msg-warning' ,'Errores en funcion solicitada - Intente nuevamente');
         return redirect()->route(self::r_edit,$modelo);
     }

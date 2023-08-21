@@ -199,7 +199,7 @@ $(document).ready(function() {
 		====================
 			Quill Editor
 		====================
-	*/
+	
 
 	var quill = new Quill('#editor-container', {
 	  modules: {
@@ -212,14 +212,16 @@ $(document).ready(function() {
 	  placeholder: 'Compose an epic...',
 	  theme: 'snow'  // or 'bubble'
 	});
-
+	*/
 	// Validating input fields
 
 	var $_getValidationField = document.getElementsByClassName('validation-text');
 	var emailReg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+	/*
 	getEmailToInput = document.getElementById('m-to');
 
+	
 	getEmailToInput.addEventListener('input', function() {
 
 	  	getEmailToInputValue = this.value;
@@ -267,7 +269,7 @@ $(document).ready(function() {
 	  }
 
 	})
-
+*/
 	
 	/*
 		=========================

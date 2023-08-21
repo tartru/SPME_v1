@@ -311,8 +311,8 @@ $permissions=[];
            
             <div class="row m-2">
                 <div class="card col-5 mb-xl-0 m-2">
-                    {{ html()->modelForm($user, 'PUT',route($permissions['update'],$user['id']))->id('entidad')->attribute('name','entidad')->open() }}
-                    <input type="hidden" name="entidad" value="1">    
+                    {{ html()->modelForm($user, 'PUT',route($permissions['update'],$user['id']))->id('entidades')->attribute('name','entidades')->open() }}
+                    <input type="hidden" name="entidades" value="1">    
                     <div class="row">
                         <div class="col-7 mb-xl-0 m-2">
                             <h4 class="h6 m-2">ENTIDADES FEDERATIVAS</h4>
@@ -349,12 +349,11 @@ $permissions=[];
                         @endforeach
                     
                         <div class="row justify-content-center align-items-center m-3">
-                        
                             <div class="col-5 mb-xl-0 p-2">
-                                 <h4><button type="submit" form="entidad" class="btn btn-primary h4" onclick="this.disabled=true;this.value='Enviando...';this.form.submit();">Guardar Entidades</button></h4>
+                                 <h4><button type="submit" form="entidades" class="btn btn-primary h4" onclick="this.disabled=true;this.value='Enviando...';this.form.submit();">Guardar Entidades</button></h4>
                             </div>
                         </div>
-                        -
+                        
                     </div>
                 {{ html()->form()->close() }}  
                 </div>
@@ -409,9 +408,9 @@ $permissions=[];
                         <input type="hidden" name="del_gr" value="{{$_vr->id}}">  
                             <div class="input-group mb-3">
                                 @if($_vr->active==0||$_vr->deleted==1)
-                                <div class="form-control text-danger" disabled aria-label="{{ $_vr->nombre}}" aria-describedby="button-addon2" title="Grupo {{$_vr->active==0 ? 'Desactivado' : 'Activo'}} y {{$_vr->deleted==1 ? 'Eliminado' : 'No eliminado'}}"><del> {{ $_vr->nombre}} ({{$_vr->id}}) </del></div>
+                                <div class="form-control text-danger " disabled aria-label="{{ $_vr->nombre}}" aria-describedby="button-addon2" title="Grupo {{$_vr->active==0 ? 'Desactivado' : 'Activo'}} y {{$_vr->deleted==1 ? 'Eliminado' : 'No eliminado'}}"><del> {{ $_vr->nombre}} ({{$_vr->id}}) </del></div>
                                 @else
-                                <input type="text" class="form-control" disabled placeholder="{{ $_vr->nombre}} ({{$_vr->id}})" aria-label="{{ $_vr->nombre}}" aria-describedby="button-addon2">
+                                <input type="text" class="form-control" disabled placeholder="{{ $_vr->nombre}} ({{$_vr->id}})" aria-label="{{ $_vr->nombre}}" aria-describedby="button-addon2" title="{{$_vr->nombre}}">
                                 @endif
                                 <button class="btn btn-danger" type="submit" form="gr{{$_vr->id}}" id="button-addon2" onclick="this.disabled=true;this.value='Enviando...';this.form.submit();">Eliminar</button>
                             </div>
@@ -460,5 +459,30 @@ $permissions=[];
 @push('scripts')
     <script src="{{ asset('dx/src/plugins/src/global/vendors.min.js') }}"></script>
     <script src="{{ asset('dx/src/plugins/src/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
+
+    {{-- Seleccionar todos los checkbox --}}
+    <script>
+        function toggleCheckboxes() {
+            // Obtener referencia al checkbox "seleccionar todo"
+            const seleccionarTodo = document.getElementById('SelectAll');
+
+            // Obtener todos los checkboxes del formulario
+            // const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            // Obtener el formulario con id "entidades"
+            const formularioEntidades = document.getElementById('entidades');
+
+            // Obtener todos los checkboxes del formulario
+            const checkboxes = formularioEntidades.querySelectorAll('input[type="checkbox"]');
+
+            // Verificar el estado del checkbox "seleccionar todo"
+            const isChecked = seleccionarTodo.checked;
+
+            // Iterar sobre los checkboxes y establecer su estado
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = isChecked;
+            });
+        }
+
+    </script>
 
 @endpush

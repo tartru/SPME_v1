@@ -66,8 +66,8 @@ body {
     background-position: bottom left; */
 }
 
-h1, h2, h3,h4, h5 {
-    font-family: "GMX","Montserrat","Helvetica Neue",Arial,sans-serif;
+h1, h2, h3, h4, h5 {
+    font-family: "GMX","Montserrat","Helvetica Neue",Arial,sans-serif !important;
     text-transform: uppercase;
 }
 
@@ -275,12 +275,17 @@ input[type=number] {
 .accordion.dataTables-filter-wrapper .card-header section > div {
     font-weight: 600;
 }
+
+.accordion.dataTables-filter-wrapper .card-header section > div.row svg {
+    transform:180deg;
+}
+
 .accordion.dataTables-filter-wrapper .card-header section > div:not(.collapsed) {
-    color: #888ea8;
+    color: #707381;
 }
 
 .card .card-title.accordion-header-like {
-    color: #888ea8;
+    color: #5c5e6b;
     font-weight: 600;
     font-size: 16.8px;
     font-family: "Montserrat","Helvetica Neue",Arial,sans-serif;
@@ -290,4 +295,8 @@ input[type=number] {
     margin-bottom: 36px;
     margin-left: -1px;
     letter-spacing: 1px;
+}
+
+.accordion.dataTables-filter-wrapper .card-header section > div:not(.collapsed) svg {
+    transform: rotate(180deg);
 }

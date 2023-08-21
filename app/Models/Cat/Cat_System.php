@@ -36,8 +36,8 @@ class Cat_system extends Model
         }
         else{
             $qry= $this->select('cat_systems.id as sys_id','cat_systems.siglas as siglas','users.id as us_id')
-            ->leftjoin('users_systems','cat_systems.id','=','users_systems.cat_system_id')
-            ->rightjoin('users','users_systems.user_id','=','users.id')
+            ->leftjoin('systems_users','cat_systems.id','=','systems_users.cat_system_id')
+            ->rightjoin('users','systems_users.user_id','=','users.id')
             ->where('cat_systems.active',1)->where('cat_systems.deleted',0)
             ->where('users.active',1)->where('users.deleted',0)
             ->where('users.id',$user_id)
@@ -56,7 +56,7 @@ class Cat_system extends Model
     }
 
     public function hasUsIdSystemId($us_id,$sys_id) {
-        $rows=DB::table('users_systems')->where('user_id', $us_id)->where('cat_system_id', $sys_id)->get();
+        $rows=DB::table('systems_users')->where('user_id', $us_id)->where('cat_system_id', $sys_id)->get();
         if(count($rows)>=1)
             return true;
         else
@@ -64,9 +64,9 @@ class Cat_system extends Model
     }
 
     public function hasUsIdSystemName($us_id,$sys_name) {
-        $rows=DB::table('users_systems')
-        ->join('cat_systems','cat_systems.id','=','users_systems.cat_system_id')
-        ->join('users','users_systems.user_id','=','users.id')
+        $rows=DB::table('systems_users')
+        ->join('cat_systems','cat_systems.id','=','systems_users.cat_system_id')
+        ->join('users','systems_users.user_id','=','users.id')
         ->where('cat_systems.active',1)->where('cat_systems.deleted',0)
         ->where('users.active',1)->where('users.deleted',0)
         ->where('user_id', $us_id)
@@ -79,14 +79,14 @@ class Cat_system extends Model
     }
 
     public function saveUsIdSysId($us_id,$sys_id) {
-        if(DB::table('users_systems')->insert(['user_id' => $us_id,'cat_system_id' => $sys_id]))
+        if(DB::table('systems_users')->insert(['user_id' => $us_id,'cat_system_id' => $sys_id]))
             return true;
         else
             return false;
     }
 
     public function deleteUsIdSysId($us_id,$sys_id) {
-        if(DB::table('users_systems')->where('user_id', $us_id)->where('cat_system_id', $sys_id)->delete())
+        if(DB::table('systems_users')->where('user_id', $us_id)->where('cat_system_id', $sys_id)->delete())
             return true;
         else
             return false;

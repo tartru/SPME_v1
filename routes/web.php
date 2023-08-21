@@ -115,8 +115,9 @@ Route::get('/callback-url', [App\Http\Controllers\AuthenticationController::clas
         Route::get('Cat/grupos_captura', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'index'])->middleware('auth')->name('admin.grupos_capturas.index');
         Route::get('Cat/grupos_captura/update/{row}', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'edit'])->middleware('auth')->can('spme.admin.grupos_capturas.update')->name('admin.grupos_capturas.edit');
         Route::put('Cat/grupos_captura/update/{row}', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'update'])->middleware('auth')->can('spme.admin.grupos_capturas.update')->name('admin.grupos_capturas.update');
-        Route::post('Cat/grupos_captura/create/', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'create'])->middleware('auth')->can('spme.admin.grupos_capturas.create')->name('admin.grupos_capturas.create');
-        Route::delete('Cat/grupos_captura/delete/{row}', [App\Http\Controllers\Cat\Cat\CatGruposCapturasController::class, 'destroy'])->middleware('auth')->can('spme.admin.grupos_capturas.delete')->name('admin.grupos_capturas.delete'); // por configurar
+        Route::get('Cat/grupos_captura/create/', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'create'])->middleware('auth')->can('spme.admin.grupos_capturas.create')->name('admin.grupos_capturas.create');
+        Route::post('Cat/grupos_captura/create/', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'store'])->middleware('auth')->can('spme.admin.grupos_capturas.create')->name('admin.grupos_capturas.store');
+        Route::delete('Cat/grupos_captura/delete/{row}', [App\Http\Controllers\Cat\CatGruposCapturasController::class, 'destroy'])->middleware('auth')->can('spme.admin.grupos_capturas.delete')->name('admin.grupos_capturas.delete'); // por configurar
 
         Route::get('Cat/grupos_claves', [App\Http\Controllers\Cat\CarGruposClavesController::class, 'index'])->middleware('auth')->name('admin.grupos_claves.index');
     // Grupos de captura
@@ -135,6 +136,9 @@ Route::get('/callback-url', [App\Http\Controllers\AuthenticationController::clas
         Route::put('adm/usuarios/create/', [App\Http\Controllers\UsersController::class, 'create'])->middleware('auth')->can('spme.admin.users.create')->name('admin.users.create'); // por configurar
         Route::delete('adm/usuarios/delete/{row}', [App\Http\Controllers\Cat\RolesController::class, 'destroy'])->middleware('auth')->can('spme.admin.users.delete')->name('admin.users.delete'); // por configurar
         Route::get('adm/profile', [App\Http\Controllers\UsersController::class, 'profile'])->middleware('auth')->name('admin.users.profile');
+        //Route::get('adm/profile/update/{row}', [App\Http\Controllers\UsersController::class, 'update'])->middleware('auth')->name('admin.users.profile.update');
+        //Route::put('adm/profile/update/{row}', [App\Http\Controllers\UsersController::class, 'store'])->middleware('auth')->name('admin.users.profile.store');
+        Route::get('adm/bandeja', [App\Http\Controllers\UsersController::class, 'bandeja'])->middleware('auth')->name('admin.users.bandeja');
         
      // usuarios
      

@@ -128,7 +128,7 @@ table.dataTable {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 1px;
-  white-space: nowrap;
+  white-space:normal;
 }
 .table > tbody > tr > td .dropdown:not(.custom-dropdown-icon):not(.custom-dropdown) .dropdown-menu {
   display: none !important;
@@ -153,7 +153,7 @@ table.dataTable {
   padding: 10px 21px 10px 21px;
   color: #515365;
   letter-spacing: 1px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {

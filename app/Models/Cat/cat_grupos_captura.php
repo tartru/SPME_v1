@@ -28,10 +28,10 @@ class Cat_grupos_captura extends Model {
     public function getBasicToSelect (){
         $arows=null;
         $rows=null;
-        $arows=$this->orderBy('nombre', 'ASC')->select(['id','nombre'])->where('active',1)->where('deleted',0)->get();
+        $arows=$this::orderBy('nombre', 'ASC')->select(['id','nombre'])->where('active',1)->where('deleted',0)->get();
         if($arows->count()){
             foreach($arows as $_hr => $_vr){
-                $rows[$_vr['id']] = $_vr['nombre']; //$_vr['clave'].' - '.$_vr['nombre'];
+                $rows[$_vr['id']] = $_vr['nombre'];  //$_vr['clave'].' - '.$_vr['nombre'];
             }
         }
         return $rows;

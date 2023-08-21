@@ -58,8 +58,8 @@ class UsersController extends Controller
 
     //datos de usuario
     public function profile()  {
-        $id=auth()->id ();
-        $user=$this->usuario->find($id);
+        //$id=auth()->id ();
+        //$user=$this->usuario->find($id);
         $data = [
             'menu_active' => 'Cuenta',
             'submenu_active' => 'admin.users.profile',
@@ -68,9 +68,25 @@ class UsersController extends Controller
                 'Usuarios' => route('admin.users.index'),
                 'Usuarios' => route('admin.users.index'),
             ],
-            'rows'        => $user,
+            //'rows'        => $user,
         ];
         return view('admin.UsersProfile',$data);    
+    }
+
+     //bandeja de usuario
+     public function bandeja()  {
+        $id=auth()->id ();
+        $user=$this->usuario->find($id);
+        $data = [
+            'menu_active' => 'Bandeja',
+            'submenu_active' => 'admin.users.bandeja',
+            'breadcrumb'  => [
+                'Usuario' => route('admin.users.profile'),
+                'Bandeja' => route('admin.users.bandeja'),
+            ],
+            'rows'        => $user,
+        ];
+        return view('admin.UserBandeja',$data);    
     }
 
     //plantilla para editar registro
@@ -255,7 +271,62 @@ class UsersController extends Controller
 
         }
 
-        //elimina grupo ind al que pertenece el usuario
+        //agrega o elimina entidades al usuario
+        if ($request->has("entidades")){
+            $rows_eu = $us->cat_entidades_federativas;
+            $var=array();
+            //return $rows_g;
+                foreach ($rows_eu as $_hrs => $_vrs){
+                    $var[$_vrs['id']]=$_vrs['id'];
+                }
+            //dump ($var);
+            $datos = $request->except('_method','_token','entidades');
+            $bol_f=true; //sin errores
+             $tiempo=Carbon::now();
+            foreach ($datos as $_hd => $_vd) {
+                if (Str::contains($_hd,'-R')){
+                    //dump('Entra '.$_hd);
+                    if(Arr::exists($datos,Str::before($_hd,'-R'))) {
+                        //dump('chek');
+                        if(!Arr::exists($var,$_vd)){
+                            //dump('se asignará: '.$_vd);
+                            if(!$us->cat_entidades_federativas()->attach($_vd,['created_at' => $tiempo])){
+                                //dump('asignado');
+                            }
+                            else {
+                                $bol_f=false;
+                                //dump('error no asignado');
+                            }
+                        }
+                    }
+                    else {
+                        if(Arr::exists($var,$_vd)){
+                            //dump('se quitará: '.$_vd);
+                            if($us->cat_entidades_federativas()->detach([$_vd])){
+                                //dump('quitado');
+                            }
+                            else {
+                                $bol_f=false;
+                                //dump('error no quitado');
+                            }
+                        }
+                    }
+                }
+            }
+            //dump($bol_f); 
+            //return $datos;
+            
+            if($bol_f){
+                session()->flash('msg-success' ,'Entidades del Usuario Actualizadas');
+                return redirect()->route('admin.users.edit',$us);
+            }else {
+                session()->flash('msg-warning' ,'No se actualizaron las entidades del Usuario - Intente nuevamente');
+                return redirect()->back()->withInput();
+            }
+
+        }
+
+        //elimina un grupo ind al que pertenece el usuario
         if ($request->has("del_gr")){
             $datos = $request->except('_method','_token');
             $bol_f=true; //sin errores
@@ -278,7 +349,7 @@ class UsersController extends Controller
             }
         }
 
-        //agrega o elimina entidades al grupo
+        //agrega grupos al usuariuo
         if ($request->has("add_grupo")){
             $datos = $request->except('_method','_token','add_grupo');
             $tiempo=Carbon::now();

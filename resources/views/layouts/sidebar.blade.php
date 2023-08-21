@@ -53,7 +53,7 @@ if (!isset($submenu_active)){
             'admin.calendario'            => 'Calendario',
         ],
         'bandeja'=> [
-            'admin.users.profile'            => 'Avisos',
+            'admin.users.bandeja'            => 'Bandeja Entrada',
         ],
         'mon_asm'=> [
             'asm.fichas.index'            => 'Fichas de Mon. y Eva.',
