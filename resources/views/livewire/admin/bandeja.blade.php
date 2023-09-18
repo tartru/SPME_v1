@@ -114,30 +114,35 @@
                 <div class="message-box-scroll" id="ct">
 
                 @if (count($rows))
+                
                     @php
+                    return $rows;
                     // validando usuarios con imagen o no para recibidos, en enviados solo se pone nombre de quien envia
-                    $ini='CNF';
-                    if(isset($user['img']))
-                        <img src="{{url()}}/public/images/profiles/{{$user['img']}}" 
-                        class="user-profile" alt="avatar">
-                        @else
+                        $ini='CNF';
+                    @endphp
+                    @if(isset($user['img']))
+                        <img src="{{url('/')}}/images/profiles/{{$user['img']}}" class="user-profile" alt="avatar">
+                    @else
                         <div class="avatar avatar-sm">
                             <span class="avatar-title rounded-circle">{{$ini}}</span>
                         </div>
-                        @endif
+                    @endif
 
+                    @php
                     if(!empty($user['full_name'])&&strlen($user['full_name'])>=5){
                         $pieces = explode(" ",$user['full_name']);
                         if(count($pieces)<=4){
                             $ini='';
-                            for ($pieces as $piece => $val)
+                            foreach ($pieces as $piece => $val) {
                                 $ini.=$val[0];
+                            }
                         }
                         if(count($pieces)>=5){
                             $ini='';
-                            for ($pieces as $piece => $val){
-                                if(strlen($val)>=3)    
+                            foreach ($pieces as $piece => $val){
+                                if(strlen($val)>=3){
                                     $ini.=$val[0];
+                                }
                             }
                         }
 
@@ -158,19 +163,23 @@
                         $mark='';
                         $bandeja = 'mailInbox';
 
-                        $opt = json_decode($_vr['options'], true);
+                        if (isset($_vr['options'])){
+                            $opt = json_decode($_vr['options'], true);
+                        }
 
-                        if ($_vr['cat_statu_id']==1)
-                            $bandeja = 'sentmail'; //correos enviados
-                            
-                        if ($_vr['cat_statu_id']==2)
-                            $bandeja = 'mailInbox';//para bandeja de entrada 
-                            
-                        if ($_vr['cat_statu_id']==3)
-                            $bandeja = 'trashed';
+                        if (isset($_vr['cat_statu_id'])){
+                            if ($_vr['cat_statu_id']==1)
+                                $bandeja = 'sentmail'; //correos enviados
+                                
+                            if ($_vr['cat_statu_id']==2)
+                                $bandeja = 'mailInbox';//para bandeja de entrada 
+                                
+                            if ($_vr['cat_statu_id']==3)
+                                $bandeja = 'trashed';
 
-                        if ($_vr['cat_statu_id']==5)
-                            $bandeja = 'trashed'; // eliminado logicamente
+                            if ($_vr['cat_statu_id']==5)
+                                $bandeja = 'trashed'; // eliminado logicamente
+                        } 
 
                         if (!empty($opt)){
                             if(isset($opt['new'])&&!empty($opt['new'])){
@@ -179,7 +188,7 @@
 
                             if(isset($opt['mark'])&&!empty($opt['mark'])){
                             $mark = 'fadeInUp';
-                            $bandeja = 'important'
+                            $bandeja = 'important';
                             }
 
                             //1) personal=azul | 2) work => naranja | 3) social =>verde | 4) private=>rojo
@@ -193,8 +202,9 @@
                         //$opt=json_decode($_vr['options'], true);
                         @endphp
                        
-                        <div class="mail-item {{$bandeja}}" id="{{!isset($new) ? 'unread-schedular-alert' : '')}}" >
-                            <div class="animated animatedFadeInUp {{$mark}}" id="mailHeading{{$_vr['id']}}">
+                        
+                        <div class="mail-item {{$bandeja}}" id="{{isset($new) ? 'unread-schedular-alert' : ''}}" >
+                            <div class="animated animatedFadeInUp {{$mark}}" id="mailHeading{{isset($_vr['id']) ? $_vr['id'] : '0'}}">
                                 <div class="mb-0">
                                     <div class="mail-item-heading {{$tag}} collapsed"  data-bs-toggle="collapse" role="navigation" data-bs-target="#mailCollapse{{$_vr['id']}}" aria-expanded="false">
                                         <div class="mail-item-inner">
@@ -1515,7 +1525,7 @@
                     <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="modal"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> -->
                     <div class="compose-box">
                         <div class="compose-content">
-                            {{ html()->modelForm($modelo,'post','{{route('prueba')}}')->id('modal')->open() }} 
+                             <form method="post"> {{--{{ html()->modelForm($modelo,'post','{{route('pruebas')}}')->id('modal')->open() }} --}}
                                 <div class="mb-4 mail-subject">
                                     <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Asunto:</p>
                                     <div class="w-100">

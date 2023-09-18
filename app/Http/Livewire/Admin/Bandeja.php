@@ -37,7 +37,8 @@ class Bandeja extends Component
         //$this->rows_sy =$this->us->Cat_systems()->where('active',1)->where('deleted',0);
         //$this->rows_efs = $this->us->cat_entidades_federativas()->where('deleted',0);
         //$this->rows_gcs = $this->us->Cat_grupos_capturas()->where('active',1)->where('deleted',0);
-        $this->rows = array ($this->us->cat_avisos->where('cat_avisos.deleted',0));
+        $this->rows = $this->us->cat_avisos->where('cat_avisos.deleted',0);
+        //$this->rows = $this->us->cat_avisos->where('cat_avisos.deleted', 0)->get();
         //dump($this->rows);
         if(auth()->user()->hasRole('spme-admin')){
             $this->_adm = true;

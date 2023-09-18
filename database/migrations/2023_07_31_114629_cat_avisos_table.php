@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('title',150)->nullable();
             $table->string('body',1500)->nullable();
             $table->string('options',50)->nullable();
-            $table->foreignId('cat_statu_id')->nullable()->constrained('cat_estatus')->onDelete('set null');
+            $table->foreignId('cat_estatu_id')->nullable()->constrained('cat_estatus')->onDelete('set null');
             $table->tinyInteger('deleted')->default(0);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable()->default(null);

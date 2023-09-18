@@ -23,10 +23,10 @@
                                 if ($image) {
                                      list($width, $height, $type, $attr) = getimagesize($image->temporaryUrl());
                                      if($width>$height){
-                                        echo  ('<img src="'.$image->temporaryUrl().'" alt="avatar Temporal" width="500px" style="width:500px;" >');
+                                        echo  ('<img src="'.$image->temporaryUrl().'" alt="avatar Temporal" width="450px" style="width:450px;" >');
                                      }
                                      else {
-                                        echo  ('<img src="'.$image->temporaryUrl().'" alt="avatar Temporal" height="450px" style="height:450px;" >');
+                                        echo  ('<img src="'.url('/').'/images/profile/avatar1.jpg" alt="avatar Temporal" height="400px" style="height:400px" >');
                                      }
                                 }
                                 ?>
